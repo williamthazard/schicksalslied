@@ -2,9 +2,11 @@
 
 engine.name = 'LiedMotor'
 LiedMotor = include('lib/LiedMotor_engine')
-hs = include('lib/halfsecond')
 MusicUtil = require "musicutil"
 sequins = require "sequins"
+fileselect = require 'fileselect'
+
+selectedfile = _path.dust.."audio/hermit_leaves.wav"
 
 local my_string = " "
 history = {}
@@ -12,6 +14,37 @@ local history_index = nil
 local new_line = false
 
 running = false 
+going = false
+
+starter = 1
+firstrate = 1
+secondrate = 1
+thirdrate = 1
+
+function softcut_init()
+  softcut.buffer_clear()
+  for i=1,6 do
+    softcut.enable(i,1)
+    softcut.level(i,1.0)
+    softcut.buffer(i,i%2+1)
+    softcut.position(i,1)
+    softcut.play(i,0)
+    softcut.level_slew_time(i,1.0)
+  end
+  softcut.voice_sync(2,1,0)
+  softcut.voice_sync(4,3,0)
+  softcut.voice_sync(6,5,0)
+  softcut.pan(1,-1)
+  softcut.pan(2,1)
+  softcut.pan(3,-1)
+  softcut.pan(4,1)
+  softcut.pan(5,-1)
+  softcut.pan(6,1)
+end
+
+function load_sample(file)
+  print(file)  
+end
 
 function step()
     while true do
@@ -24,19 +57,158 @@ function step()
     end
 end
 
+function softone()
+  while true do
+    clock.sync(s:step(4)()/s:step(5)())
+    if going then
+      softcut.position(1,s:step(6)())
+      softcut.rate_slew_time(1,1/s:step(7)())
+      firstrate = (s:step(8)()/s:step(9)())
+      softcut.rate(1,firstrate)
+      softcut.fade_time(1,1/s:step(10)())
+      softcut.position(2,s:step(6)())
+      softcut.rate_slew_time(2,1/s:step(7)())
+      softcut.rate(2,firstrate)
+      softcut.fade_time(2,1/s:step(10)())
+      if s:step(11)() >= 17 then
+        softcut.loop(1,1)
+        softcut.loop(2,1)
+        print('first one',1,softcut.query_position(1))
+        softcut.loop_start(1,softcut.query_position(1))
+        softcut.loop_end(1,softcut.query_position(1)+s:step(12)())
+        print('second one',2,softcut.query_position(2))
+        softcut.loop_start(2,softcut.query_position(2))
+        softcut.loop_end(2,softcut.query_position(2)+s:step(12)())
+      else
+        softcut.loop(1,0)
+        softcut.loop(2,0)
+      end
+    end
+  end
+end
+
+function softtwo()
+  while true do
+    clock.sync(s:step(13)()/s:step(14)())
+    if going then
+      softcut.position(3,s:step(15)())
+      softcut.rate_slew_time(3,1/s:step(16)())
+      secondrate = (s:step(17)()/s:step(18)())
+      softcut.rate(3,secondrate)
+      softcut.fade_time(3,1/s:step(19)())
+      softcut.position(4,s:step(15)())
+      softcut.rate_slew_time(4,1/s:step(16)())
+      softcut.rate(4,secondrate)
+      softcut.fade_time(4,1/s:step(19)())
+      if s:step(20)() >= 17 then
+        softcut.loop(3,1)
+        softcut.loop(4,1)
+        print('third one',3,softcut.query_position(3))
+        softcut.loop_start(3,softcut.query_position(3))
+        softcut.loop_end(3,softcut.query_position(3)+s:step(21)())
+        print('fourth one',4,softcut.query_position(4))
+        softcut.loop_start(4,softcut.query_position(4))
+        softcut.loop_end(4,softcut.query_position(4)+s:step(21)())
+      else
+        softcut.loop(3,0)
+        softcut.loop(4,0)
+      end
+    end
+  end
+end
+
+function softthree()
+  while true do
+    clock.sync(s:step(22)()/s:step(23)())
+    if going then
+      softcut.position(5,s:step(24)())
+      softcut.rate_slew_time(5,1/s:step(25)())
+      thirdrate = (s:step(26)()/s:step(27)())
+      softcut.rate(5,thirdrate)
+      softcut.fade_time(5,1/s:step(28)())
+      softcut.position(6,s:step(24)())
+      softcut.rate_slew_time(6,(1/s:step(25)()))
+      softcut.rate(6,thirdrate)
+      softcut.fade_time(6,1/s:step(28)())
+      if s:step(29)() >= 17 then
+        softcut.loop(5,1)
+        softcut.loop(6,1)
+        print('fifth one',5,softcut.query_position(5))
+        softcut.loop_start(5,softcut.query_position(5))
+        softcut.loop_end(5,softcut.query_position(5)+s:step(30)())
+        print('sixth one',6,softcut.query_position(6))
+        softcut.loop_start(6,softcut.query_position(6))
+        softcut.loop_end(6,softcut.query_position(6)+s:step(30)())
+      else
+        softcut.loop(5,0)
+        softcut.loop(6,0)
+      end
+    end
+  end
+end
+
+function revone()
+  while true do
+    clock.sync(s:step(31)()/s:step(32)())
+    firstrate = -firstrate
+  end
+end
+
+function revtwo()
+  while true do
+    clock.sync(s:step(32)()/s:step(33)())
+    secondrate = -secondrate
+  end
+end
+
+function revthree()
+  while true do
+    clock.sync(s:step(34)()/s:step(35)())
+    thirdrate = -thirdrate
+  end
+end
+
 function key(n,z)
-  if n==3 and z==1 then
-    -- K3 toggles playback
+  if n==2 and z==1 then
+    -- K2 toggles softcut
+    going = not going
+    print('going')
+    if going then
+      for i=1,6 do
+        softcut.play(i,1)
+      end
+    elseif not going then
+      for i=1,6 do
+        softcut.play(i,0)
+      end
+    end
+  elseif n==3 and z==1 then
+    -- K3 toggles synth engine
     running = not running
+    print('running')
   end
 end
 
 function init()
   LiedMotor.add_params() -- adds params via the `.add params()` function defined in LiedMotor_engine.lua
+  params:add_file('file select','file select')
+  params:set_action('file select', function(file) load_sample(file) selectedfile=file end)
+  params:add_control('softcut_1','softcut_1',controlspec.new(0,1,'lin',0.01,1,''))
+  params:set_action('softcut_1',function(x) softcut.level(1,x) softcut.level(2,x) end)
+  params:add_control('softcut_2','softcut_2',controlspec.new(0,1,'lin',0.01,1,''))
+  params:set_action('softcut_2',function(x) softcut.level(3,x) softcut.level(4,x) end)
+  params:add_control('softcut_3','softcut_3',controlspec.new(0,1,'lin',0.01,1,''))
+  params:set_action('softcut_3',function(x) softcut.level(5,x) softcut.level(6,x) end)
   screen.aa(0)
   print("lied")
-  hs.init()
+  softcut_init()
   clock.run(step)
+  clock.run(softone)
+  clock.run(softtwo)
+  clock.run(softthree)
+  clock.run(revone)
+  clock.run(revtwo)
+  clock.run(revthree)
 end
 
 function remap(ascii)
@@ -56,6 +228,9 @@ s = sequins(processString(my_string))
   
 function set()
     s:settable(processString(my_string))
+    starter = s:step(52)()*2
+    softcut.buffer_read_stereo(selectedfile, starter, 1, -1, 0, 1)
+    ch,length,rate = audio.file_info(selectedfile)
 end
 
 function keyboard.char(character)
