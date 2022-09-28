@@ -30,6 +30,7 @@ function softcut_init()
     softcut.position(i,1)
     softcut.play(i,0)
     softcut.level_slew_time(i,1.0)
+    softcut.phase_quant(i,0.125)
   end
   softcut.voice_sync(2,1,0)
   softcut.voice_sync(4,3,0)
@@ -40,6 +41,8 @@ function softcut_init()
   softcut.pan(4,1)
   softcut.pan(5,-1)
   softcut.pan(6,1)
+  softcut.event_phase(update_positions)
+  softcut.poll_start_phase()
 end
 
 function load_sample(file)
@@ -57,28 +60,44 @@ function step()
     end
 end
 
+function update_positions(i,pos)
+  my_positions[i] = pos - 1
+end
+
+my_positions = {}
+
 function softone()
   while true do
     clock.sync(s:step(4)()/s:step(5)())
     if going then
-      softcut.position(1,s:step(6)())
-      softcut.rate_slew_time(1,1/s:step(7)())
-      firstrate = (s:step(8)()/s:step(9)())
+      local ch,length,rate = audio.file_info(selectedfile)
+      if length/rate > 300 then length = 300
+        else length = length/rate
+      end
+      local firstposition = util.linlin(49,80,1,length-0.5,s:step(6)())
+      softcut.position(1,firstposition)
+      local firstrateslew = 1/s:step(7)()
+      softcut.rate_slew_time(1,firstrateslew)
+      local firstrate = (s:step(8)()/s:step(9)())
       softcut.rate(1,firstrate)
-      softcut.fade_time(1,1/s:step(10)())
-      softcut.position(2,s:step(6)())
-      softcut.rate_slew_time(2,1/s:step(7)())
+      local firstfade = 1/s:step(10)()
+      softcut.fade_time(1,firstfade)
+      softcut.position(2,firstposition)
+      softcut.rate_slew_time(2,firstrateslew)
       softcut.rate(2,firstrate)
-      softcut.fade_time(2,1/s:step(10)())
+      softcut.fade_time(2,firstfade)
       if s:step(11)() >= 17 then
+        local firstend = s:step(12)()
+        local realend = firstposition + firstend
+        if realend > length then realend = length
+          else realend = firstend
+        end
         softcut.loop(1,1)
         softcut.loop(2,1)
-        print('first one',1,softcut.query_position(1))
-        softcut.loop_start(1,softcut.query_position(1))
-        softcut.loop_end(1,softcut.query_position(1)+s:step(12)())
-        print('second one',2,softcut.query_position(2))
-        softcut.loop_start(2,softcut.query_position(2))
-        softcut.loop_end(2,softcut.query_position(2)+s:step(12)())
+        softcut.loop_start(1,firstposition)
+        softcut.loop_end(1,realend)
+        softcut.loop_start(2,firstposition)
+        softcut.loop_end(2,realend)
       else
         softcut.loop(1,0)
         softcut.loop(2,0)
@@ -91,24 +110,34 @@ function softtwo()
   while true do
     clock.sync(s:step(13)()/s:step(14)())
     if going then
-      softcut.position(3,s:step(15)())
-      softcut.rate_slew_time(3,1/s:step(16)())
-      secondrate = (s:step(17)()/s:step(18)())
+      local ch,length,rate = audio.file_info(selectedfile)
+      if length/rate > 300 then length = 300
+        else length = length/rate
+      end
+      local secondposition = util.linlin(49,80,1,length-0.5,s:step(15)())
+      softcut.position(3,secondposition)
+      local secondrateslew = 1/s:step(16)()
+      softcut.rate_slew_time(3,secondrateslew)
+      local secondrate = (s:step(17)()/s:step(18)())
       softcut.rate(3,secondrate)
-      softcut.fade_time(3,1/s:step(19)())
-      softcut.position(4,s:step(15)())
-      softcut.rate_slew_time(4,1/s:step(16)())
+      local secondfade = 1/s:step(19)()
+      softcut.fade_time(3,secondfade)
+      softcut.position(4,secondposition)
+      softcut.rate_slew_time(4,secondrateslew)
       softcut.rate(4,secondrate)
-      softcut.fade_time(4,1/s:step(19)())
+      softcut.fade_time(4,secondfade)
       if s:step(20)() >= 17 then
+        local secondend = s:step(21)()
+        local realend = secondposition + secondend
+        if realend > length then realend = length
+          else realend = secondend
+        end
         softcut.loop(3,1)
         softcut.loop(4,1)
-        print('third one',3,softcut.query_position(3))
-        softcut.loop_start(3,softcut.query_position(3))
-        softcut.loop_end(3,softcut.query_position(3)+s:step(21)())
-        print('fourth one',4,softcut.query_position(4))
-        softcut.loop_start(4,softcut.query_position(4))
-        softcut.loop_end(4,softcut.query_position(4)+s:step(21)())
+        softcut.loop_start(3,secondposition)
+        softcut.loop_end(3,realend)
+        softcut.loop_start(4,secondposition)
+        softcut.loop_end(4,realend)
       else
         softcut.loop(3,0)
         softcut.loop(4,0)
@@ -121,24 +150,34 @@ function softthree()
   while true do
     clock.sync(s:step(22)()/s:step(23)())
     if going then
-      softcut.position(5,s:step(24)())
-      softcut.rate_slew_time(5,1/s:step(25)())
-      thirdrate = (s:step(26)()/s:step(27)())
+      local ch,length,rate = audio.file_info(selectedfile)
+      if length/rate > 300 then length = 300
+        else length = length/rate
+      end
+      local thirdposition = util.linlin(49,80,1,length-0.5,s:step(24)())
+      softcut.position(5,thirdposition)
+      local thirdrateslew = 1/s:step(25)()
+      softcut.rate_slew_time(5,thirdrateslew)
+      local thirdrate = (s:step(26)()/s:step(27)())
       softcut.rate(5,thirdrate)
-      softcut.fade_time(5,1/s:step(28)())
-      softcut.position(6,s:step(24)())
-      softcut.rate_slew_time(6,(1/s:step(25)()))
+      local thirdfade = 1/s:step(28)()
+      softcut.fade_time(5,thirdfade)
+      softcut.position(6,thirdposition)
+      softcut.rate_slew_time(6,thirdrateslew)
       softcut.rate(6,thirdrate)
-      softcut.fade_time(6,1/s:step(28)())
+      softcut.fade_time(6,thirdfade)
       if s:step(29)() >= 17 then
+        local thirdend = s:step(30)()
+        local realend = thirdposition + thirdend
+        if realend > length then realend = length
+          else realend = thirdend
+        end
         softcut.loop(5,1)
         softcut.loop(6,1)
-        print('fifth one',5,softcut.query_position(5))
-        softcut.loop_start(5,softcut.query_position(5))
-        softcut.loop_end(5,softcut.query_position(5)+s:step(30)())
-        print('sixth one',6,softcut.query_position(6))
-        softcut.loop_start(6,softcut.query_position(6))
-        softcut.loop_end(6,softcut.query_position(6)+s:step(30)())
+        softcut.loop_start(5,thirdposition)
+        softcut.loop_end(5,realend)
+        softcut.loop_start(6,thirdposition)
+        softcut.loop_end(6,realend)
       else
         softcut.loop(5,0)
         softcut.loop(6,0)
@@ -156,14 +195,14 @@ end
 
 function revtwo()
   while true do
-    clock.sync(s:step(32)()/s:step(33)())
+    clock.sync(s:step(33)()/s:step(34)())
     secondrate = -secondrate
   end
 end
 
 function revthree()
   while true do
-    clock.sync(s:step(34)()/s:step(35)())
+    clock.sync(s:step(35)()/s:step(36)())
     thirdrate = -thirdrate
   end
 end
@@ -228,9 +267,9 @@ s = sequins(processString(my_string))
   
 function set()
     s:settable(processString(my_string))
-    starter = s:step(52)()*2
+    local ch,length,rate = audio.file_info(selectedfile)
+    starter = util.linlin(49,80,1,length/rate,s:step(37)())
     softcut.buffer_read_stereo(selectedfile, starter, 1, -1, 0, 1)
-    ch,length,rate = audio.file_info(selectedfile)
 end
 
 function keyboard.char(character)
