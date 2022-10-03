@@ -567,28 +567,28 @@ end
 
 g.key = function(x,y,z)
   momentary[x][y] = z == 1
-  if z==1 then
-     local index = x+16*(y-1)
-     if index <= #history then
-       mystring = mystring .. history[index]
-       redraw()
-     end
-  if z==0 then
+  if z == 1 then
+    local index = x + 16*(y-1)
+    if index <= #history then
+      my_string = my_string .. history[index]
+      redraw()
+    end
+  elseif z == 0 then
     local flag = false
-    for j=1,8 do
-          for k=1,16 do
-              if momentary[j][k] then
-                flag = true
-                break
-              end
-            end
-          end
-        if not flag then
-          set()
-          my_string = ''
-          redraw()
-          new_line = true
+    for j = 1,8 do
+      for k = 1,16 do
+        if momentary[j][k] then
+          flag = true
+          break
         end
+      end
+    end
+    if not flag then
+      set()
+      my_string = ""
+      new_line = true
+      redraw()
+    end
   end
   grid_dirty = true -- flag for redraw
 end
