@@ -565,58 +565,29 @@ function grid_redraw()
 end
 
 g.key = function(x,y,z)
-  -- this is cool:
-  momentary[x][y] = z == 1 and true or false -- if a grid key is pressed, flip it's table entry to 'on'
-  -- what ^that^ did was use an inline condition to assign our momentary state.
-  -- same thing as: if z == 1 then momentary[x][y] = true else momentary[x][y] = false end
+  momentary[x][y] = z == 1
   if z == 1 then
-    if y == 1 then
-      if x <= #history then
-        my_string = history[x]
-        redraw()
-      end
-    elseif y == 2 then
-      if x <= #history then
-        my_string = history[x+16]
-        redraw()
-      end
-    elseif y == 3 then
-      if x <= #history then
-        my_string = history[x+32]
-        redraw()
-      end
-    elseif y == 4 then
-      if x <= #history then
-        my_string = history[x+48]
-        redraw()
-      end
-    elseif y == 5 then
-      if x <= #history then
-        my_string = history[x+64]
-        redraw()
-      end
-    elseif y == 6 then
-      if x <= #history then
-        my_string = history[x+80]
-        redraw()
-      end
-    elseif y == 7 then
-      if x <= #history then
-        my_string = history[x+96]
-        redraw()
-      end
-    elseif y == 8 then
-      if x <= #history then
-        my_string = history[x+112]
-        redraw()
-      end
+    local index = x + 16*(y-1)
+    if index <= #history then
+      my_string = my_string .. history[index]
+      redraw()
     end
   elseif z == 0 then
-    set()
-    --table.insert(history, my_string) -- append the command to history
-    my_string = "" -- clear my_string
-    new_line = true
-    redraw()
+    local flag = false
+    for j = 1,8 do
+      for k = 1,16 do
+        if momentary[j][k] then
+          flag = true
+          break
+        end
+      end
+    end
+    if not flag then
+      set()
+      my_string = ""
+      new_line = true
+      redraw()
+    end
   end
   grid_dirty = true -- flag for redraw
 end
