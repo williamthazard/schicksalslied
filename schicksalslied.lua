@@ -311,7 +311,7 @@ function init()
       momentary[x][y] = false -- the state of each key is 'off'
     end
   end
-  print("lied")
+  print("schicksalslied")
   softcut_init()
   clock.run(step)
   clock.run(softone)
@@ -557,8 +557,9 @@ function grid_redraw()
    for x = 1,16 do -- for each column...
     for y = 1,8 do -- and each row...
       if momentary[x][y] then -- if the key is held...
-        if x<= #history
+        if x+16*(y-1) <= #history then
         g:led(x,y,15) -- turn on that LED!
+        end
       end
     end
   end
@@ -567,27 +568,29 @@ end
 
 g.key = function(x,y,z)
   momentary[x][y] = z == 1
-  if z == 1 then
-    local index = x + 16*(y-1)
-    if index <= #history then
-      my_string = my_string .. history[index]
-      redraw()
-    end
-  elseif z == 0 then
-    local flag = false
-    for j = 1,8 do
-      for k = 1,16 do
-        if momentary[j][k] then
-          flag = true
-          break
+  if x+16*(y-1) <= #history then
+    if z == 1 then
+      local index = x + 16*(y-1)
+      if index <= #history then
+        my_string = my_string .. history[index]
+        redraw()
+      end
+    elseif z == 0 then
+      local flag = false
+      for j = 1,8 do
+        for k = 1,16 do
+          if momentary[j][k] then
+            flag = true
+            break
+          end
         end
       end
-    end
-    if not flag then
-      set()
-      my_string = ""
-      new_line = true
-      redraw()
+      if not flag then
+        set()
+        my_string = ""
+        new_line = true
+        redraw()
+      end
     end
   end
   grid_dirty = true -- flag for redraw
