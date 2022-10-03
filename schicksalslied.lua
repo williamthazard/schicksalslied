@@ -10,7 +10,7 @@ selectedfile = _path.dust.."audio/hermit_leaves.wav"
 
 local my_string = " "
 history = {}
-local history_index = nil
+local history_index = 1
 local new_line = false
 
 running = false 
@@ -371,7 +371,6 @@ function keyboard.code(code,value)
     elseif code == "UP" then
       if #history > 0 then -- make sure there's a history
         if new_line then -- reset the history index after pressing enter
-          history_index = #history
           new_line = false
         else
           history_index = util.clamp(history_index - 1, 1, #history) -- increment history_index
@@ -386,6 +385,7 @@ function keyboard.code(code,value)
     elseif code == "ENTER" and #my_string > 0 then
         set()
         table.insert(history, my_string) -- append the command to history
+        history_index = #history
         my_string = "" -- clear my_string
         new_line = true
     end
@@ -402,7 +402,6 @@ function redraw()
   screen.move(5,59)
   screen.text("> " .. my_string)
   if #history > 0 then
-    history_index = #history -- this is always the last entered command
     screen.move(5, 45)
     screen.text(history[history_index])
     if history_index >= 2 then screen.move(5, 35) screen.text(history[history_index - 1]) end -- command before last
