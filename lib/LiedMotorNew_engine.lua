@@ -50,7 +50,7 @@ local specs = {
 }
 
 -- this table establishes an order for parameter initialization:
-local param_names = {"carpartial1","index1","attack1","release1","phase1","mul1","pan1","modfreq1","modpartial1","modindex1","modmul1","carpartial2","index2","attack2","release2","phase2","mul2","pan2","modfreq2","modpartial2","modindex2","modmul2","carpartial3","index3","attack3","release3","phase3","mul3","pan3","modfreq3","modpartial3","modindex3","modmul3","carpartial4","index4","attack4","release4","phase4","mul4","pan4","modfreq4","modpartial4","modindex4","modmul4"}
+local param_names = {"carPartial1","index1","attack1","release1","phase1","mul1","pan1","modfreq1","modPartial1","modindex1","modmul1","carPartial2","index2","attack2","release2","phase2","mul2","pan2","modfreq2","modPartial2","modindex2","modmul2","carPartial3","index3","attack3","release3","phase3","mul3","pan3","modfreq3","modPartial3","modindex3","modmul3","carPartial4","index4","attack4","release4","phase4","mul4","pan4","modfreq4","modPartial4","modindex4","modmul4"}
 
 -- initialize parameters:
 function LiedMotorNew.add_params()
