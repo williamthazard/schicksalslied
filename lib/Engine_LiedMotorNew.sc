@@ -154,7 +154,6 @@ SynthDef("carrier4",
         signal4;
     )
 }).add;
-)
 
 SynthDef("modulator4",
 	{ arg outbus4 = 8,
