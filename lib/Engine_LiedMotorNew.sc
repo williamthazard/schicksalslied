@@ -1,9 +1,17 @@
 Engine_LiedMotorNew : CroneEngine {
 
 	var params;
+	var firstmodulator;
+	var firstcarrier;
+	var secondmodulator;
+	var secondcarrier;
+	var thirdmodulator;
+	var thirdcarrier;
+	var fourthmodulator;
+	var fourthcarrier;
 
 	alloc {
-(
+
 SynthDef("carrier1",
 	{ arg inbus1 = 2,
 		outbus1 = 0,
@@ -171,7 +179,6 @@ SynthDef("modulator4",
         modindex4
     )
 }).add;
-)
 
 		params = Dictionary.newFrom([
 			\carPartial1, 1,
@@ -227,25 +234,38 @@ SynthDef("modulator4",
 		});
 
 		this.addCommand("hzone", "f", { arg msg;
-			Synth.new("moulator1", \modfreq1 ++ params.getPairs);
-			Synth.new("carrier1", [\freq1, msg[1]] ++ params.getPairs)
+			firstmodulator = Synth.new("modulator1", \modfreq1 ++ params.getPairs);
+			firstcarrier = Synth.new("carrier1", [\freq1, msg[1]] ++ params.getPairs)
 		});
 
 		this.addCommand("hztwo", "f", { arg msg;
-			Synth.new("moulator2", \modfreq2 ++ params.getPairs);
-			Synth.new("carrier2", [\freq2, msg[1]] ++ params.getPairs)
+			secondmodulator = Synth.new("modulator2", \modfreq2 ++ params.getPairs);
+			secondcarrier = Synth.new("carrier2", [\freq2, msg[1]] ++ params.getPairs)
 		});
 
 		this.addCommand("hzthree", "f", { arg msg;
-			Synth.new("moulator3", \modfreq3 ++ params.getPairs);
-			Synth.new("carrier3", [\freq3, msg[1]] ++ params.getPairs)
+			thirdmodulator = Synth.new("modulator3", \modfreq3 ++ params.getPairs);
+			thirdcarrier = Synth.new("carrier3", [\freq3, msg[1]] ++ params.getPairs)
 		});
 
 		this.addCommand("hzfour", "f", { arg msg;
-			Synth.new("moulator4", \modfreq4 ++ params.getPairs);
-			Synth.new("carrier4", [\freq4, msg[1]] ++ params.getPairs)
+			fourthmodulator = Synth.new("modulator4", \modfreq4 ++ params.getPairs);
+			fourthcarrier = Synth.new("carrier4", [\freq4, msg[1]] ++ params.getPairs)
 		});
 
 	}
+	
+	free {
+		// free any variable we create
+		// otherwise it won't ever stop!
+		firstmodulator.free;
+		firstcarrier.free;
+		secondmodulator.free;
+		secondcarrier.free;
+		thirdmodulator.free;
+		thirdcarrier.free;
+		fourthmodulator.free;
+		fourthcarrier.free;
+    }
 
 }
