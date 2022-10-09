@@ -16,6 +16,7 @@ local new_line = false
 
 running = false 
 going = false
+walking = false
 
 starter = 1
 firstrate = 1
@@ -62,28 +63,6 @@ function step()
             local note_num = s()
             local freq = MusicUtil.note_num_to_freq(note_num)
             LiedMotorNew.trig(freq)
-        end
-    end
-end
-
-function steptwo()
-    while true do
-        clock.sync(s:step(5)()/s:step(6)())
-        if running then
-            local note_num = s:step(4)()
-            local freq = MusicUtil.note_num_to_freq(note_num)
-            LiedMotorNew.trigtwo(freq)
-        end
-    end
-end
-
-function stepthree()
-    while true do
-        clock.sync(s:step(8)()/s:step(9)())
-        if running then
-            local note_num = s:step(7)()
-            local freq = MusicUtil.note_num_to_freq(note_num)
-            LiedMotorNew.trigthree(freq)
         end
     end
 end
@@ -294,6 +273,28 @@ function revthree()
   end
 end
 
+function steptwo()
+    while true do
+        clock.sync(s:step(52)()/s:step(53)())
+        if running then
+            local note_num = s:step(54)()
+            local freq = MusicUtil.note_num_to_freq(note_num)
+            LiedMotorNew.trigtwo(freq)
+        end
+    end
+end
+
+function stepthree()
+    while true do
+        clock.sync(s:step(55)()/s:step(56)())
+        if running then
+            local note_num = s:step(57)()
+            local freq = MusicUtil.note_num_to_freq(note_num)
+            LiedMotorNew.trigthree(freq)
+        end
+    end
+end
+
 function key(n,z)
   if n==2 and z==1 then
     -- K2 toggles softcut
@@ -315,6 +316,13 @@ function key(n,z)
     if running then
     print('running')
     else print('not running')
+    end
+  elseif n==1 and z==1 then
+    -- K1 + K3 toggles crow
+    walking = not walking
+    if walking then
+      print('walking')
+        else print('not walking')
     end
   end
 end
@@ -359,7 +367,40 @@ function init()
   clock.run(firstpan)
   clock.run(secondpan)
   clock.run(thirdpan)
+  clock.run(notes_event)
+  clock.run(other_event)
+  clock.run(jfa_event)
+  clock.run(jfb_event)
+  clock.run(jfc_event)
+  clock.run(jfd_event)
+  clock.run(jfe_event)
+  clock.run(jff_event)
+  clock.run(run_event)
+  clock.run(quantize_event)
+  clock.run(with_event)
+  clock.run(rev_event)
+  clock.run(looper)
+  clock.run(withsyna_event)
+  clock.run(withsynb_event)
+  clock.run(withsync_event)
+  clock.run(withsynd_event)
+  clock.run(withsynlpg_event)
+  clock.run(withsynsym_event)
+  clock.run(withsynfmrat_event)
   clock.run(grid_redraw_clock)
+  crow.input[1].mode('clock')
+  crow.ii.jf.mode(1)
+  crow.ii.jf.run_mode(1)
+  crow.ii.jf.tick(bpm)
+  crow.ii.wtape.timestamp(1)
+  crow.ii.wtape.freq(0)
+  crow.ii.wtape.play(1)
+  crow.ii.wsyn.ar_mode(1)
+  crow.ii.wsyn.voices(4) 
+  crow.ii.wsyn.patch(1,1)
+  crow.ii.wsyn.patch(2,2)
+  crow.ii.wsyn.fm_index(1)
+  crow.ii.wsyn.fm_env(0)
 end
 
 function shnth.bar(n, d)
@@ -399,29 +440,305 @@ function shnth.minor(n, z)
 end
 
 function remap(ascii)
-    ascii = ascii % 32 + 48
+    ascii = ascii % 32 + 49
     return ascii
 end
 
-function processString(s)
+function crowmap(ascii)
+    ascii = ascii % 32 + 1
+    return ascii
+end
+
+function processString(c)
     local tempScalar = {}
-      for i = 1, #s do
-        table.insert(tempScalar,remap(s:byte(i)))
+      for i = 1, #c do
+        table.insert(tempScalar,remap(c:byte(i)))
       end
     return tempScalar
 end
 
+function crowString(c)
+    local tempScalar = {}
+    for i = 1, #c do
+      table.insert(tempScalar,crowmap(c:byte(i)))
+    end
+    return tempScalar
+end
+
+function jfmap(ascii)
+    ascii = ascii % 5 + 1
+    return ascii
+end
+  
+function jfscaling(j)
+    local tempScalar = {}
+    for i = 1, #j do
+     table.insert(tempScalar,jfmap(j:byte(i)))
+    end
+    return tempScalar
+end
+
 s = sequins(processString(my_string))
+c = sequins(crowString(my_string))
+j = sequins(jfscaling(my_string))
   
 function set()
     s:settable(processString(my_string))
+    c:settable(crowString(my_string))
+    j:settable(jfscaling(my_string))
     local ch,length,rate = audio.file_info(selectedfile)
     local seclength = length/rate
     if seclength > 300 then seclength = seclength-300
       else seclength = seclength
     end
-    starter = util.linlin(49,80,0,seclength,s:step(52)())
+    starter = util.linlin(49,80,0,seclength,s:step(58)())
     softcut.buffer_read_stereo(selectedfile, starter, 0, -1, 0, 1)
+end
+
+function notes_event()
+  while true do
+    clock.sync(c:step(59)()/c:step(60)())
+    if walking then
+    crow.output[1].volts = c:step(61)()/12
+    crow.output[1].slew = c:step(62)()/300
+    crow.output[2].action = "{to(5,dyn{attack=1}), to(0,dyn{release=1})}"
+    crow.output[2].dyn.attack = c:step(63)()/40
+    crow.output[2].dyn.release = c:step(64)()/40
+    crow.output[2]()
+    end
+  end
+end
+
+function other_event()
+  while true do
+    clock.sync(c:step(65)()/c:step(66)())
+    if walking then
+    crow.output[3].volts = c:step(67)()/12
+    crow.output[3].slew = c:step(68)()/300
+    crow.output[4].action = "{to(5,dyn{attack=1}), to(0,dyn{release=1})}"
+    crow.output[4].dyn.attack = c:step(69)()/40
+    crow.output[4].dyn.release = c:step(70)()/40
+    crow.output[4]()
+    end
+  end
+end
+
+function jfa_event()
+  while true do
+    clock.sync(c:step(71)()/c:step(72)())
+    if walking then
+    crow.ii.jf.play_voice(1, c:step(73)()/12, j:step(74)())
+    end
+  end
+end
+
+function jfb_event()
+  while true do
+    clock.sync(c:step(75)()/c:step(76)())
+    if walking then
+    crow.ii.jf.play_voice(2, c:step(77)()/12, j:step(78)())
+    end
+  end  
+end
+
+function jfc_event()
+  while true do
+    clock.sync(c:step(79)()/c:step(80)())
+    if walking then
+    crow.ii.jf.play_voice(3, c:step(81)()/12, j:step(82)())
+    end
+  end
+end
+
+function jfd_event()
+  while true do
+    clock.sync(s:step(83)()/s:step(84)())
+    if walking then
+    crow.ii.jf.play_voice(4, s:step(85)()/12, j:step(86)())
+    end
+  end
+end
+
+function jfe_event()
+  while true do
+    clock.sync(c:step(87)()/c:step(88)())
+    if walking then
+    crow.ii.jf.play_voice(5, c:step(89)()/12, j:step(90)())
+    end
+  end
+end
+
+function jff_event()
+  while true do
+    clock.sync(c:step(91)()/c:step(92)())
+    if walking then
+    crow.ii.jf.play_voice(6, c:step(93)()/12, j:step(94)())
+    end
+  end
+end
+
+function run_event()
+  while true do
+    clock.sync(c:step(95)()/c:step(96)())
+    if walking then
+    crow.ii.jf.run(j:step(97)())
+    end
+  end
+end
+
+function quantize_event()
+  while true do
+    clock.sync(c:step(98)()/j:step(99)())
+    if walking then
+    crow.ii.jf.quantize(c:step(100)())
+    end
+  end
+end
+
+function with_event()
+  while true do
+    clock.sync(c:step(101)()/c:step(102)())
+    if walking then
+    crow.ii.wtape.speed(c:step(103)(), c:step(104)())
+    end
+  end
+end
+
+function rev_event()
+  while true do
+    clock.sync(c:step(105)()/c:step(106)())
+    if walking then
+    crow.ii.wtape.reverse()
+    end
+  end
+end
+
+function looper()
+  while true do
+    clock.sync(c:step(107)()/c:step(108)())
+    if walking then
+    crow.ii.wtape.loop_start()
+    clock.sync(c:step(109)()/c:step(110)())
+    crow.ii.wtape.loop_end()
+      if c:step(111)() < 17 then
+        for i = 1,j:step(112)() do 
+          clock.sync(c:step(113)()/c:step(114)())
+          crow.ii.wtape.loop_scale(c:step(115)()/c:step(116)())
+          for i = 1,j:step(117)() do
+            clock.sync(c:step(118)()/c:step(119)())
+            crow.ii.wtape.loop_next(c:step(120)()-c:step(121)())
+          end 
+        end
+      elseif c:step(111)() >= 17 then
+        for i = 1,j:step(122)() do
+          clock.sync(c:step(123)()/c:step(124)())
+          crow.ii.wtape.loop_next(c:step(125)()-c:step(126)())
+          for i = 1,j:step(127)() do
+            clock.sync(c:step(128)()/c:step(129)())
+            crow.ii.wtape.loop_scale(c:step(130)()/c:step(131)())
+          end
+        end
+      end
+    clock.sync(c:step(132)()/c:step(133)())
+    crow.ii.wtape.loop_active(0)
+      for i = 1,c:step(134)() do
+        clock.sync(c:step(135)()/c:step(136)())
+        crow.ii.wtape.seek((c:step(137)()*300)-(c:step(138)()*300))
+      end
+      for i = 1,j:step(139)() do
+        clock.sync(c:step(140)()/c:step(141)())
+        crow.ii.wtape.loop_active(1)
+        if c:step(142)() < 17 then
+          for i = 1,j:step(91)() do 
+            clock.sync(c:step(92)()/c:step(93)())
+            crow.ii.wtape.loop_scale(c:step(94)()/c:step(95)())
+            for i = 1,j:step(96)() do
+              clock.sync(c:step(97)()/c:step(98)())
+              crow.ii.wtape.loop_next(c:step(99)()-c:step(100)())
+            end 
+          end
+        elseif c:step(142)() >= 17 then
+          for i = 1,j:step(143)() do
+            clock.sync(c:step(144)()/c:step(145)())
+            crow.ii.wtape.loop_next(c:step(146)()-c:step(147)())
+            for i = 1,j:step(148)() do
+              clock.sync(c:step(149)()/c:step(150)())
+              crow.ii.wtape.loop_scale(c:step(151)()/c:step(152)())
+            end
+          end
+        end
+        clock.sync(c:step(153)()/c:step(154)())
+        crow.ii.wtape.loop_active(0)
+        for i = 1,c:step(155)() do
+          clock.sync(c:step(156)()/c:step(157)())
+          crow.ii.wtape.seek((c:step(158)()*300)-(c:step(159)()*300))
+        end
+      end
+      end
+  end
+end
+
+function withsyna_event()
+  while true do
+    clock.sync(c:step(160)()/c:step(161)())
+    if walking then
+    crow.ii.wsyn.play_voice(1, c:step(162)()/12, j:step(163)())
+    end
+  end
+end
+
+function withsynb_event()
+  while true do
+    clock.sync(c:step(164)()/c:step(165)())
+    if walking then
+    crow.ii.wsyn.play_voice(1, c:step(166)()/12, j:step(167)())
+    end
+  end
+end
+
+function withsync_event()
+  while true do
+    clock.sync(c:step(168)()/c:step(169)())
+    if walking then
+    crow.ii.wsyn.play_voice(1, c:step(170)()/12, j:step(171)())
+    end
+  end
+end
+
+function withsynd_event()
+  while true do
+    clock.sync(c:step(172)()/c:step(173)())
+    if walking then
+    crow.ii.wsyn.play_voice(1, c:step(174)()/12, j:step(175)())
+    end
+  end
+end
+
+function withsynlpg_event()
+  while true do
+    clock.sync(c:step(176)()/c:step(177)())
+    if walking then
+    crow.ii.wsyn.lpg_time(c:step(178)()-c:step(179)())
+    end
+  end
+end
+
+function withsynsym_event()
+  while true do
+    clock.sync(c:step(179)()/c:step(180)())
+    if walking then
+    crow.ii.wsyn.lpg_symmetry(c:step(181)()-c:step(182)())
+    end
+  end
+end
+
+function withsynfmrat_event()
+  while true do
+    clock.sync(c:step(190)()/c:step(191)())
+    if walking then
+    crow.ii.wsyn.fm_ratio(c:step(192)(),c:step(193)())
+    end
+  end
 end
 
 function keyboard.char(character)
