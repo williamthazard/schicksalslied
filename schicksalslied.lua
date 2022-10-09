@@ -1,16 +1,17 @@
 ---schicksalslied
 
-engine.name = 'LiedMotor'
-LiedMotor = include('lib/LiedMotor_engine')
+engine.name = 'LiedMotorNew'
+LiedMotorNew = include('lib/LiedMotorNew_engine')
 MusicUtil = require "musicutil"
 sequins = require "sequins"
 fileselect = require 'fileselect'
+shnth = include("shnth/lib/shnth")
 
 selectedfile = _path.dust.."audio/hermit_leaves.wav"
 
 local my_string = " "
 history = {}
-local history_index = 1
+local history_index = nil
 local new_line = false
 
 running = false 
@@ -46,8 +47,12 @@ function softcut_init()
   softcut.poll_start_phase()
 end
 
-function load_sample(file)
-  print(file)  
+function Split()
+  for line in io.lines() do
+    if #line > 0 then
+    table.insert(history, line)
+    end
+  end
 end
 
 function step()
@@ -56,7 +61,29 @@ function step()
         if running then
             local note_num = s()
             local freq = MusicUtil.note_num_to_freq(note_num)
-            LiedMotor.trig(freq)
+            LiedMotorNew.trig(freq)
+        end
+    end
+end
+
+function steptwo()
+    while true do
+        clock.sync(s:step(5)()/s:step(6)())
+        if running then
+            local note_num = s:step(4)()
+            local freq = MusicUtil.note_num_to_freq(note_num)
+            LiedMotorNew.trigtwo(freq)
+        end
+    end
+end
+
+function stepthree()
+    while true do
+        clock.sync(s:step(8)()/s:step(9)())
+        if running then
+            local note_num = s:step(7)()
+            local freq = MusicUtil.note_num_to_freq(note_num)
+            LiedMotorNew.trigthree(freq)
         end
     end
 end
@@ -176,7 +203,7 @@ function secondpan()
   while true do
     clock.sync(s:step(28)()/s:step(29)())
     if going then
-      local firstpan = util.linlin(49,80,-1,1,s:step(30)())
+      local secondpan = util.linlin(49,80,-1,1,s:step(30)())
       local secondnegativepan = secondpan * -1
       local secondpanslew = 1/s:step(31)()
       softcut.pan(3,secondpan)
@@ -293,9 +320,11 @@ function key(n,z)
 end
 
 function init()
-  LiedMotor.add_params() -- adds params via the `.add params()` function defined in LiedMotor_engine.lua
-  params:add_file('file select','file select')
-  params:set_action('file select', function(file) load_sample(file) selectedfile=file end)
+  LiedMotorNew.add_params() -- adds params via the `.add params()` function defined in LiedMotor_engine.lua
+  params:add_file('audio file','audio file')
+  params:set_action('audio file', function(file) selectedfile=file end)
+  params:add_file('text file','text file')
+  params:set_action('text file',function(file) io.input(file) Split(file) grid_redraw() end)
   params:add_control('softcut_1','softcut_1',controlspec.new(0,1,'lin',0.01,1,''))
   params:set_action('softcut_1',function(x) softcut.level(1,x) softcut.level(2,x) end)
   params:add_control('softcut_2','softcut_2',controlspec.new(0,1,'lin',0.01,1,''))
@@ -313,7 +342,11 @@ function init()
   end
   print("schicksalslied")
   softcut_init()
+  sh = hid.connect()
+  sh.event = shnth.event
   clock.run(step)
+  clock.run(steptwo)
+  clock.run(stepthree)
   clock.run(softone)
   clock.run(softtwo)
   clock.run(softthree)
@@ -327,6 +360,42 @@ function init()
   clock.run(secondpan)
   clock.run(thirdpan)
   clock.run(grid_redraw_clock)
+end
+
+function shnth.bar(n, d)
+  if d == 1 then
+    for i=1,4 do
+      if n==i then
+        local note_num = s[i]
+        local freq = MusicUtil.note_num_to_freq(note_num)
+        LiedMotorNew.trigfour(freq)
+      end
+    end
+  end
+end
+
+function shnth.major(n, z)
+  if z==1 then
+    for i=1,4 do
+      if n==i then
+        local note_num = s[i+4]
+        local freq = MusicUtil.note_num_to_freq(note_num)
+        LiedMotorNew.trigfour(freq,z)
+      end
+    end
+  end
+end
+
+function shnth.minor(n, z)
+  if z==1 then
+    for i=1,4 do
+      if n==i then
+        local note_num = s[i+8]
+        local freq = MusicUtil.note_num_to_freq(note_num)
+        LiedMotorNew.trigfour(freq)
+      end
+    end
+  end
 end
 
 function remap(ascii)
@@ -371,6 +440,7 @@ function keyboard.code(code,value)
     elseif code == "UP" then
       if #history > 0 then -- make sure there's a history
         if new_line then -- reset the history index after pressing enter
+          history_index = #history
           new_line = false
         else
           history_index = util.clamp(history_index - 1, 1, #history) -- increment history_index
@@ -385,7 +455,6 @@ function keyboard.code(code,value)
     elseif code == "ENTER" and #my_string > 0 then
         set()
         table.insert(history, my_string) -- append the command to history
-        history_index = #history
         my_string = "" -- clear my_string
         new_line = true
     end
@@ -402,6 +471,7 @@ function redraw()
   screen.move(5,59)
   screen.text("> " .. my_string)
   if #history > 0 then
+    history_index = #history -- this is always the last entered command
     screen.move(5, 45)
     screen.text(history[history_index])
     if history_index >= 2 then screen.move(5, 35) screen.text(history[history_index - 1]) end -- command before last
