@@ -1,7 +1,7 @@
 ---schicksalslied
 
-engine.name = 'LiedMotorNew'
-LiedMotorNew = include('lib/LiedMotorNew_engine')
+engine.name = 'LiedMotor'
+LiedMotor = include('lib/LiedMotor_engine')
 MusicUtil = require "musicutil"
 sequins = require "sequins"
 fileselect = require 'fileselect'
@@ -62,7 +62,7 @@ function step()
         if running then
             local note_num = s()
             local freq = MusicUtil.note_num_to_freq(note_num)
-            LiedMotorNew.trig(freq)
+            LiedMotor.trig(freq)
         end
     end
 end
@@ -279,7 +279,7 @@ function steptwo()
         if running then
             local note_num = s:step(54)()
             local freq = MusicUtil.note_num_to_freq(note_num)
-            LiedMotorNew.trigtwo(freq)
+            LiedMotor.trigtwo(freq)
         end
     end
 end
@@ -290,7 +290,7 @@ function stepthree()
         if running then
             local note_num = s:step(57)()
             local freq = MusicUtil.note_num_to_freq(note_num)
-            LiedMotorNew.trigthree(freq)
+            LiedMotor.trigthree(freq)
         end
     end
 end
@@ -328,7 +328,7 @@ function key(n,z)
 end
 
 function init()
-  LiedMotorNew.add_params() -- adds params via the `.add params()` function defined in LiedMotor_engine.lua
+  LiedMotor.add_params() -- adds params via the `.add params()` function defined in LiedMotor_engine.lua
   params:add_file('audio file','audio file')
   params:set_action('audio file', function(file) selectedfile=file end)
   params:add_file('text file','text file')
@@ -355,6 +355,9 @@ function init()
   clock.run(step)
   clock.run(steptwo)
   clock.run(stepthree)
+  clock.run(stepfour)
+  clock.run(stepfive)
+  clock.run(stepsix)
   clock.run(softone)
   clock.run(softtwo)
   clock.run(softthree)
@@ -409,10 +412,11 @@ function shnth.bar(n, d)
       if n==i then
         local note_num = s[i]
         local freq = MusicUtil.note_num_to_freq(note_num)
-        LiedMotorNew.trigfour(freq)
+        LiedMotor.trigseven(freq)
       end
     end
   end
+  params:set('LiedMotor_index7',d)
 end
 
 function shnth.major(n, z)
@@ -421,7 +425,7 @@ function shnth.major(n, z)
       if n==i then
         local note_num = s[i+4]
         local freq = MusicUtil.note_num_to_freq(note_num)
-        LiedMotorNew.trigfour(freq,z)
+        LiedMotor.trigeight(freq)
       end
     end
   end
@@ -433,7 +437,7 @@ function shnth.minor(n, z)
       if n==i then
         local note_num = s[i+8]
         local freq = MusicUtil.note_num_to_freq(note_num)
-        LiedMotorNew.trigfour(freq)
+        LiedMotor.trigfour(freq)
       end
     end
   end
@@ -552,9 +556,9 @@ end
 
 function jfd_event()
   while true do
-    clock.sync(s:step(83)()/s:step(84)())
+    clock.sync(c:step(83)()/c:step(84)())
     if walking then
-    crow.ii.jf.play_voice(4, s:step(85)()/12, j:step(86)())
+    crow.ii.jf.play_voice(4, c:step(85)()/12, j:step(86)())
     end
   end
 end
@@ -739,6 +743,39 @@ function withsynfmrat_event()
     crow.ii.wsyn.fm_ratio(c:step(192)(),c:step(193)())
     end
   end
+end
+
+function stepfour()
+    while true do
+        clock.sync(s:step(194)()/s:step(195)())
+        if running then
+            local note_num = s:step(196)()
+            local freq = MusicUtil.note_num_to_freq(note_num)
+            LiedMotor.trigfour(freq)
+        end
+    end
+end
+
+function stepfive()
+    while true do
+        clock.sync(s:step(196)()/s:step(197)())
+        if running then
+            local note_num = s:step(198)()
+            local freq = MusicUtil.note_num_to_freq(note_num)
+            LiedMotor.trigfive(freq)
+        end
+    end
+end
+
+function stepsix()
+    while true do
+        clock.sync(s:step(199)()/s:step(200)())
+        if running then
+            local note_num = s:step(201)()
+            local freq = MusicUtil.note_num_to_freq(note_num)
+            LiedMotor.trigsix(freq)
+        end
+    end
 end
 
 function keyboard.char(character)
