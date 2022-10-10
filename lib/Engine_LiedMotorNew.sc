@@ -17,7 +17,6 @@ SynthDef("carrier1",
 		outbus1 = 0,
 		freq1 = 440,
 		carPartial1 = 1,
-		index1 = 3,
 		attack1 = 0,
 		release1 = 0.4,
 		phase1 = 0,
@@ -41,17 +40,18 @@ SynthDef("modulator1",
 	{ arg outbus1 = 2,
 		modfreq1 = 220,
 		modPartial1 = 1,
-		modindex1 = 3,
-		modmul1 = 0.2;
+		attack1 = 0,
+		release1 = 0.4,
+		index1 = 3,
+		modmul1 = 0.2,
+		pan1 = 0;
 
+	var envelope1 = Env.perc(attackTime: attack1, releaseTime: release1, level: modmul1).kr(doneAction: 2);
+	var signal1 = Pan2.ar((LFTri.ar((modfreq1 * modPartial1), 0, modfreq1) * modmul1 * index1 * envelope1), pan1);
     Out.ar(
         outbus1,
-        LFTri.ar(modfreq1 * modPartial1, 0, modfreq1)
-        *
-        modmul1
-        *
-        modindex1
-    )
+		signal1;
+				)
 }).add;
 
 SynthDef("carrier2",
@@ -59,7 +59,6 @@ SynthDef("carrier2",
 		outbus2 = 0,
 		freq2 = 440,
 		carPartial2 = 1,
-		index2 = 3,
 		attack2 = 0,
 		release2 = 0.4,
 		phase2 = 0,
@@ -83,17 +82,18 @@ SynthDef("modulator2",
 	{ arg outbus2 = 4,
 		modfreq2 = 220,
 		modPartial2 = 1,
-		modindex2 = 3,
-		modmul2 = 0.2;
+		attack2 = 0,
+		release2 = 0.4,
+		index2 = 3,
+		modmul2 = 0.2,
+		pan2 = 0;
 
+	var envelope2 = Env.perc(attackTime: attack2, releaseTime: release2, level: modmul2).kr(doneAction: 2);
+	var signal2 = Pan2.ar((LFTri.ar((modfreq2 * modPartial2), 0, modfreq2) * modmul2 * index2 * envelope2), pan2);
     Out.ar(
         outbus2,
-        LFTri.ar(modfreq2 * modPartial2, 0, modfreq2)
-        *
-        modmul2
-        *
-        modindex2
-    )
+		signal2;
+				)
 }).add;
 
 SynthDef("carrier3",
@@ -101,7 +101,6 @@ SynthDef("carrier3",
 		outbus3 = 0,
 		freq3 = 440,
 		carPartial3 = 1,
-		index3 = 3,
 		attack3 = 0,
 		release3 = 0.4,
 		phase3 = 0,
@@ -125,17 +124,18 @@ SynthDef("modulator3",
 	{ arg outbus3 = 6,
 		modfreq3 = 220,
 		modPartial3 = 1,
-		modindex3 = 3,
-		modmul3 = 0.2;
+		attack3 = 0,
+		release3 = 0.4,
+		index3 = 3,
+		modmul3 = 0.2,
+		pan3 = 0;
 
+	var envelope3 = Env.perc(attackTime: attack3, releaseTime: release3, level: modmul3).kr(doneAction: 2);
+	var signal3 = Pan2.ar((LFTri.ar((modfreq3 * modPartial3), 0, modfreq3) * modmul3 * index3 * envelope3), pan3);
     Out.ar(
         outbus3,
-        LFTri.ar(modfreq3 * modPartial3, 0, modfreq3)
-        *
-        modmul3
-        *
-        modindex3
-    )
+		signal3;
+				)
 }).add;
 
 SynthDef("carrier4",
@@ -143,7 +143,6 @@ SynthDef("carrier4",
 		outbus4 = 0,
 		freq4 = 440,
 		carPartial4 = 1,
-		index4 = 3,
 		attack4 = 0,
 		release4 = 0.4,
 		phase4 = 0,
@@ -167,17 +166,18 @@ SynthDef("modulator4",
 	{ arg outbus4 = 8,
 		modfreq4 = 220,
 		modPartial4 = 1,
-		modindex4 = 3,
-		modmul4 = 0.2;
+		attack4 = 0,
+		release4 = 0.4,
+		index4 = 3,
+		modmul4 = 0.2,
+		pan4 = 0;
 
+	var envelope4 = Env.perc(attackTime: attack4, releaseTime: release4, level: modmul4).kr(doneAction: 2);
+	var signal4 = Pan2.ar((LFTri.ar((modfreq4 * modPartial4), 0, modfreq4) * modmul4 * index4 * envelope4), pan4);
     Out.ar(
         outbus4,
-        LFTri.ar(modfreq4 * modPartial4, 0, modfreq4)
-        *
-        modmul4
-        *
-        modindex4
-    )
+		signal4;
+				)
 }).add;
 
 		params = Dictionary.newFrom([
@@ -190,7 +190,6 @@ SynthDef("modulator4",
 			\pan1, 0,
 			\modfreq1, 220,
 			\modPartial1, 1,
-			\modindex1, 3,
 			\modmul1, 0.2,
 			\carPartial2, 1,
 			\index2, 3,
@@ -201,7 +200,6 @@ SynthDef("modulator4",
 			\pan2, 0,
 			\modfreq2, 220,
 			\modPartial2, 1,
-			\modindex2, 3,
 			\modmul2, 0.2,
 			\carPartial3, 1,
 			\index3, 3,
@@ -212,7 +210,6 @@ SynthDef("modulator4",
 			\pan3, 0,
 			\modfreq3, 220,
 			\modPartial3, 1,
-			\modindex3, 3,
 			\modmul3, 0.2,
 			\carPartial4, 1,
 			\index4, 3,
@@ -223,7 +220,6 @@ SynthDef("modulator4",
 			\pan4, 0,
 			\modfreq4, 220,
 			\modPartial4, 1,
-			\modindex4, 3,
 			\modmul4, 0.2;
 		]);
 
@@ -252,20 +248,5 @@ SynthDef("modulator4",
 			fourthmodulator = Synth.new("modulator4", \modfreq4 ++ params.getPairs);
 			fourthcarrier = Synth.new("carrier4", [\freq4, msg[1]] ++ params.getPairs)
 		});
-
 	}
-	
-	free {
-		// free any variable we create
-		// otherwise it won't ever stop!
-		firstmodulator.free;
-		firstcarrier.free;
-		secondmodulator.free;
-		secondcarrier.free;
-		thirdmodulator.free;
-		thirdcarrier.free;
-		fourthmodulator.free;
-		fourthcarrier.free;
-    }
-
 }
