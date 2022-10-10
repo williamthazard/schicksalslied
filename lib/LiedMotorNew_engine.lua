@@ -3,10 +3,10 @@ local Formatters = require 'formatters'
 
 -- first, we'll collect all of our commands into norns-friendly ranges
 local specs = {
-  ["mul1"] = controlspec.new(0, 2, "lin", 0, 1, ""),
-  ["mul2"] = controlspec.new(0, 2, "lin", 0, 1, ""),
-  ["mul3"] = controlspec.new(0, 2, "lin", 0, 1, ""),
-  ["mul4"] = controlspec.new(0, 2, "lin", 0, 1, ""),
+  ["mul1"] = controlspec.new(0, 2, "lin", 0, 0.5, ""),
+  ["mul2"] = controlspec.new(0, 2, "lin", 0, 0.4, ""),
+  ["mul3"] = controlspec.new(0, 2, "lin", 0, 0.4, ""),
+  ["mul4"] = controlspec.new(0, 2, "lin", 0, 0.6, ""),
   ["modmul1"] = controlspec.new(0, 2, "lin", 0, 1, ""),
   ["modmul2"] = controlspec.new(0, 2, "lin", 0, 1, ""),
   ["modmul3"] = controlspec.new(0, 2, "lin", 0, 1, ""),
@@ -15,30 +15,26 @@ local specs = {
   ["modfreq2"] = controlspec.FREQ,
   ["modfreq3"] = controlspec.FREQ,
   ["modfreq4"] = controlspec.FREQ,
-  ["carPartial1"] = controlspec.new(0, 24, "lin", 1, 1, ""),
-  ["carPartial2"] = controlspec.new(0, 24, "lin", 1, 1, ""),
-  ["carPartial3"] = controlspec.new(0, 24, "lin", 1, 1, ""),
+  ["carPartial1"] = controlspec.new(0, 24, "lin", 1, 4, ""),
+  ["carPartial2"] = controlspec.new(0, 24, "lin", 1, 3, ""),
+  ["carPartial3"] = controlspec.new(0, 24, "lin", 1, 2, ""),
   ["carPartial4"] = controlspec.new(0, 24, "lin", 1, 1, ""),
-  ["modPartial1"] = controlspec.new(0, 24, "lin", 1, 1, ""),
-  ["modPartial2"] = controlspec.new(0, 24, "lin", 1, 1, ""),
-  ["modPartial3"] = controlspec.new(0, 24, "lin", 1, 1, ""),
-  ["modPartial4"] = controlspec.new(0, 24, "lin", 1, 1, ""),
-  ["index1"] = controlspec.new(0, 24, "lin", 1, 1, ""),
-  ["index2"] = controlspec.new(0, 24, "lin", 1, 1, ""),
-  ["index3"] = controlspec.new(0, 24, "lin", 1, 1, ""),
-  ["index4"] = controlspec.new(0, 24, "lin", 1, 1, ""),
-  ["modindex1"] = controlspec.new(0, 24, "lin", 1, 1, ""),
-  ["modindex2"] = controlspec.new(0, 24, "lin", 1, 1, ""),
-  ["modindex3"] = controlspec.new(0, 24, "lin", 1, 1, ""),
-  ["modindex4"] = controlspec.new(0, 24, "lin", 1, 1, ""),
+  ["modPartial1"] = controlspec.new(0, 24, "lin", 1, 8, ""),
+  ["modPartial2"] = controlspec.new(0, 24, "lin", 1, 7, ""),
+  ["modPartial3"] = controlspec.new(0, 24, "lin", 1, 6, ""),
+  ["modPartial4"] = controlspec.new(0, 24, "lin", 1, 5, ""),
+  ["index1"] = controlspec.new(0, 24, "lin", 1, 12, ""),
+  ["index2"] = controlspec.new(0, 24, "lin", 1, 11, ""),
+  ["index3"] = controlspec.new(0, 24, "lin", 1, 10, ""),
+  ["index4"] = controlspec.new(0, 24, "lin", 1, 9, ""),
   ["attack1"] = controlspec.new(0.003, 8, "exp", 0, 0, "s"),
   ["attack2"] = controlspec.new(0.003, 8, "exp", 0, 0, "s"),
   ["attack3"] = controlspec.new(0.003, 8, "exp", 0, 0, "s"),
-  ["attack4"] = controlspec.new(0.003, 8, "exp", 0, 0, "s"),
+  ["attack4"] = controlspec.new(0.003, 8, "exp", 0, 1, "s"),
   ["release1"] = controlspec.new(0.003, 8, "exp", 0, 1, "s"),
   ["release2"] = controlspec.new(0.003, 8, "exp", 0, 1, "s"),
   ["release3"] = controlspec.new(0.003, 8, "exp", 0, 1, "s"),
-  ["release4"] = controlspec.new(0.003, 8, "exp", 0, 1, "s"),
+  ["release4"] = controlspec.new(0.003, 8, "exp", 0, 2, "s"),
   ["phase1"] = controlspec.new(0, 4, "lin", 0, 1, ""),
   ["phase2"] = controlspec.new(0, 4, "lin", 0, 1, ""),
   ["phase3"] = controlspec.new(0, 4, "lin", 0, 1, ""),
@@ -50,7 +46,7 @@ local specs = {
 }
 
 -- this table establishes an order for parameter initialization:
-local param_names = {"carPartial1","index1","attack1","release1","phase1","mul1","pan1","modfreq1","modPartial1","modindex1","modmul1","carPartial2","index2","attack2","release2","phase2","mul2","pan2","modfreq2","modPartial2","modindex2","modmul2","carPartial3","index3","attack3","release3","phase3","mul3","pan3","modfreq3","modPartial3","modindex3","modmul3","carPartial4","index4","attack4","release4","phase4","mul4","pan4","modfreq4","modPartial4","modindex4","modmul4"}
+local param_names = {"carPartial1","index1","attack1","release1","phase1","mul1","pan1","modfreq1","modPartial1","modmul1","carPartial2","index2","attack2","release2","phase2","mul2","pan2","modfreq2","modPartial2","modmul2","carPartial3","index3","attack3","release3","phase3","mul3","pan3","modfreq3","modPartial3","modmul3","carPartial4","index4","attack4","release4","phase4","mul4","pan4","modfreq4","modPartial4","modmul4"}
 
 -- initialize parameters:
 function LiedMotorNew.add_params()
