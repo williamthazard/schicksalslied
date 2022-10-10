@@ -407,7 +407,8 @@ function init()
 end
 
 function shnth.bar(n, d)
-  if d == 1 then
+  params:set('LiedMotor_index7',d)
+  if d > 0.2 then
     for i=1,4 do
       if n==i then
         local note_num = s[i]
@@ -416,7 +417,6 @@ function shnth.bar(n, d)
       end
     end
   end
-  params:set('LiedMotor_index7',d)
 end
 
 function shnth.major(n, z)
@@ -437,7 +437,7 @@ function shnth.minor(n, z)
       if n==i then
         local note_num = s[i+8]
         local freq = MusicUtil.note_num_to_freq(note_num)
-        LiedMotor.trigfour(freq)
+        LiedMotor.trigeight(freq)
       end
     end
   end
