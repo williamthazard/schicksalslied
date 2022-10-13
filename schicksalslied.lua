@@ -72,6 +72,61 @@ function step()
     end
 end
 
+function steptwo()
+    while true do
+        clock.sync(s:step(4)()/s:step(5)())
+        if running then
+            local note_num = s:step(6)()
+            local freq = MusicUtil.note_num_to_freq(note_num)
+            LiedMotor.trigtwo(freq)
+        end
+    end
+end
+
+function stepthree()
+    while true do
+        clock.sync(s:step(7)()/s:step(8)())
+        if running then
+            local note_num = s:step(9)()
+            local freq = MusicUtil.note_num_to_freq(note_num)
+            LiedMotor.trigthree(freq)
+        end
+    end
+end
+
+function stepfour()
+    while true do
+        clock.sync(s:step(10)()/s:step(11)())
+        if running then
+            local note_num = s:step(12)()
+            local freq = MusicUtil.note_num_to_freq(note_num)
+            LiedMotor.trigfour(freq)
+        end
+    end
+end
+
+function stepfive()
+    while true do
+        clock.sync(s:step(13)()/s:step(14)())
+        if running then
+            local note_num = s:step(15)()
+            local freq = MusicUtil.note_num_to_freq(note_num)
+            LiedMotor.trigfive(freq)
+        end
+    end
+end
+
+function stepsix()
+    while true do
+        clock.sync(s:step(16)()/s:step(17)())
+        if running then
+            local note_num = s:step(18)()
+            local freq = MusicUtil.note_num_to_freq(note_num)
+            LiedMotor.trigsix(freq)
+        end
+    end
+end
+
 function update_positions(i,pos)
   my_positions[i] = pos - 1
 end
@@ -80,22 +135,22 @@ my_positions = {}
 
 function softone()
   while true do
-    clock.sync(s:step(4)()/s:step(5)())
+    clock.sync(s:step(19)()/s:step(20)())
     if going then
-      local firstfade = 1/s:step(6)() + 1
+      local firstfade = 1/j:step(21)()
       softcut.fade_time(1,firstfade)
       softcut.fade_time(2,firstfade)
       local ch,length,rate = audio.file_info(selectedfile)
       if length/rate > 300 then length = 300
         else length = length/rate
       end
-      local firstposition = util.linlin(49,80,0,length-0.5,s:step(7)())
+      local firstposition = util.linlin(49,80,0,length-0.5,s:step(22)())
       softcut.position(1,firstposition)
       softcut.position(2,firstposition)
-      local firstend = s:step(8)()
+      local firstend = util.linlin(49,80,0,length,s:step(23)())
       local realend = firstposition + firstend
       if realend > length then realend = length
-        else realend = firstend
+        else realend = realend
       end
       softcut.loop_start(1,firstposition)
       softcut.loop_end(1,realend)
@@ -109,13 +164,16 @@ end
 
 function softfirstrate()
   while true do
-    clock.sync(s:step(9)()/s:step(10)())
+    clock.sync(s:step(24)()/s:step(25)())
     if going then
-      local firstrateslew = 1/s:step(11)()
+      local firstrateslew = 1/c:step(26)()
       softcut.rate_slew_time(1,firstrateslew)
       softcut.rate_slew_time(2,firstrateslew)
-      firstrate = (s:step(12)()/s:step(13)())
+      firstrate = (s:step(27)()/s:step(28)())
       if firstrate > 16 then firstrate = 16
+        else firstrate = firstrate
+      end
+      if c:step(29)() > 17 then firstrate = firstrate * -1
         else firstrate = firstrate
       end
       softcut.rate(1,firstrate)
@@ -126,11 +184,11 @@ end
 
 function firstpan()
   while true do
-    clock.sync(s:step(14)()/s:step(15)())
+    clock.sync(s:step(30)()/s:step(31)())
     if going then
-      local firstpan = util.linlin(49,80,-1,1,s:step(16)())
+      local firstpan = util.linlin(49,80,-1,1,s:step(32)())
       local firstnegativepan = firstpan * -1
-      local firstpanslew = 1/s:step(17)()
+      local firstpanslew = 1/j:step(33)()
       softcut.pan(1,firstpan)
       softcut.pan(2,firstnegativepan)
       softcut.pan_slew_time(1,firstpanslew)
@@ -141,22 +199,22 @@ end
 
 function softtwo()
   while true do
-    clock.sync(s:step(18)()/s:step(19)())
+    clock.sync(s:step(34)()/s:step(35)())
     if going then
-      local secondfade = 1/s:step(20)() + 1
+      local secondfade = 1/j:step(36)()
       softcut.fade_time(3,secondfade)
       softcut.fade_time(4,secondfade)
       local ch,length,rate = audio.file_info(selectedfile)
       if length/rate > 300 then length = 300
         else length = length/rate
       end
-      local secondposition = util.linlin(49,80,0,length-0.5,s:step(21)())
+      local secondposition = util.linlin(49,80,0,length-0.5,s:step(37)())
       softcut.position(3,secondposition)
       softcut.position(4,secondposition)
-      local secondend = s:step(22)()
+      local secondend = util.linlin(49,80,0,length,s:step(38)())
       local realend = secondposition + secondend
       if realend > length then realend = length
-        else realend = secondend
+        else realend = realend
       end
       softcut.loop_start(3,secondposition)
       softcut.loop_end(3,realend)
@@ -168,13 +226,16 @@ end
 
 function softsecondrate()
   while true do
-    clock.sync(s:step(23)()/s:step(24)())
+    clock.sync(s:step(39)()/s:step(40)())
     if going then
-      local secondrateslew = 1/s:step(25)()
+      local secondrateslew = 1/c:step(41)()
       softcut.rate_slew_time(3,secondrateslew)
       softcut.rate_slew_time(4,secondrateslew)
-      secondrate = (s:step(26)()/s:step(27)())
+      secondrate = (s:step(42)()/s:step(43)())
       if secondrate > 16 then secondrate = 16
+        else secondrate = secondrate
+      end
+      if c:step(44)() > 17 then secondrate = secondrate * -1
         else secondrate = secondrate
       end
       softcut.rate(3,secondrate)
@@ -185,11 +246,11 @@ end
 
 function secondpan()
   while true do
-    clock.sync(s:step(28)()/s:step(29)())
+    clock.sync(s:step(45)()/s:step(46)())
     if going then
-      local secondpan = util.linlin(49,80,-1,1,s:step(30)())
+      local secondpan = util.linlin(49,80,-1,1,s:step(47)())
       local secondnegativepan = secondpan * -1
-      local secondpanslew = 1/s:step(31)()
+      local secondpanslew = 1/j:step(48)()
       softcut.pan(3,secondpan)
       softcut.pan(4,secondnegativepan)
       softcut.pan_slew_time(3,secondpanslew)
@@ -200,22 +261,22 @@ end
 
 function softthree()
   while true do
-    clock.sync(s:step(32)()/s:step(33)())
+    clock.sync(s:step(49)()/s:step(50)())
     if going then
-      local thirdfade = 1/s:step(34)() + 1
+      local thirdfade = 1/j:step(51)()
       softcut.fade_time(5,thirdfade)
       softcut.fade_time(6,thirdfade)
       local ch,length,rate = audio.file_info(selectedfile)
       if length/rate > 300 then length = 300
         else length = length/rate
       end
-      local thirdposition = util.linlin(49,80,0,length-0.5,s:step(35)())
+      local thirdposition = util.linlin(49,80,0,length-0.5,s:step(52)())
       softcut.position(5,thirdposition)
       softcut.position(6,thirdposition)
-      local thirdend = s:step(36)()
+      local thirdend = util.linlin(49,80,0,length,s:step(53)())
       local realend = thirdposition + thirdend
       if realend > length then realend = length
-        else realend = thirdend
+        else realend = realend
       end
       softcut.loop_start(5,thirdposition)
       softcut.loop_end(5,realend)
@@ -227,13 +288,16 @@ end
 
 function softthirdrate()
   while true do
-    clock.sync(s:step(37)()/s:step(38)())
+    clock.sync(s:step(54)()/s:step(55)())
     if going then
-      local thirdrateslew = 1/s:step(39)()
+      local thirdrateslew = 1/c:step(56)()
       softcut.rate_slew_time(5,thirdrateslew)
       softcut.rate_slew_time(6,thirdrateslew)
-      thirdrate = (s:step(40)()/s:step(41)())
+      thirdrate = (s:step(57)()/s:step(58)())
       if thirdrate > 16 then thirdrate = 16
+        else thirdrate = thirdrate
+      end
+      if c:step(59)() > 17 then thirdrate = thirdrate * -1
         else thirdrate = thirdrate
       end
       softcut.rate(5,thirdrate)
@@ -244,60 +308,17 @@ end
 
 function thirdpan()
   while true do
-    clock.sync(s:step(42)()/s:step(43)())
+    clock.sync(s:step(60)()/s:step(61)())
     if going then
-      local thirdpan = util.linlin(49,80,-1,1,s:step(44)())
+      local thirdpan = util.linlin(49,80,-1,1,s:step(62)())
       local thirdnegativepan = thirdpan * -1
-      local thirdpanslew = 1/s:step(45)()
+      local thirdpanslew = 1/j:step(63)()
       softcut.pan(5,thirdpan)
       softcut.pan(6,thirdnegativepan)
       softcut.pan_slew_time(5,thirdpanslew)
       softcut.pan_slew_time(6,thirdpanslew)
     end
   end
-end
-
-function revone()
-  while true do
-    clock.sync(s:step(46)()/s:step(47)())
-    firstrate = firstrate * -1
-  end
-end
-
-function revtwo()
-  while true do
-    clock.sync(s:step(48)()/s:step(49)())
-    secondrate = secondrate * -1
-  end
-end
-
-function revthree()
-  while true do
-    clock.sync(s:step(50)()/s:step(51)())
-    thirdrate = thirdrate * -1
-  end
-end
-
-function steptwo()
-    while true do
-        clock.sync(s:step(52)()/s:step(53)())
-        if running then
-            local note_num = s:step(54)()
-            local freq = MusicUtil.note_num_to_freq(note_num)
-            LiedMotor.trigtwo(freq)
-        end
-    end
-end
-
-function stepthree()
-    while true do
-        clock.sync(s:step(55)()/s:step(56)())
-        if running then
-            local note_num = s:step(57)()
-            local freq = MusicUtil.note_num_to_freq(note_num)
-            LiedMotor.trigthree(freq)
-        end
-    end
 end
 
 function key(n,z)
@@ -376,9 +397,6 @@ function init()
   clock.run(softone)
   clock.run(softtwo)
   clock.run(softthree)
-  clock.run(revone)
-  clock.run(revtwo)
-  clock.run(revthree)
   clock.run(softfirstrate)
   clock.run(softsecondrate)
   clock.run(softthirdrate)
@@ -507,7 +525,7 @@ function set()
     if seclength > 300 then seclength = seclength-300
       else seclength = seclength
     end
-    starter = util.linlin(49,80,0,seclength,s:step(58)())
+    starter = util.linlin(49,80,0,seclength,s:step(64)())
     softcut.buffer_read_stereo(selectedfile, starter, 0, -1, 0, 1)
 end
 
@@ -523,13 +541,13 @@ end
 
 function notes_event()
   while true do
-    clock.sync(c:step(59)()/c:step(60)())
+    clock.sync(c:step(65)()/c:step(66)())
     if walking then
-    crow.output[1].volts = c:step(61)()/12
-    crow.output[1].slew = c:step(62)()/300
+    crow.output[1].volts = c:step(67)()/12
+    crow.output[1].slew = c:step(68)()/300
     crow.output[2].action = "{to(5,dyn{attack=1}), to(0,dyn{release=1})}"
-    crow.output[2].dyn.attack = c:step(63)()/40
-    crow.output[2].dyn.release = c:step(64)()/40
+    crow.output[2].dyn.attack = c:step(69)()/40
+    crow.output[2].dyn.release = c:step(70)()/40
     crow.output[2]()
     end
   end
@@ -537,13 +555,13 @@ end
 
 function other_event()
   while true do
-    clock.sync(c:step(65)()/c:step(66)())
+    clock.sync(c:step(71)()/c:step(72)())
     if walking then
-    crow.output[3].volts = c:step(67)()/12
-    crow.output[3].slew = c:step(68)()/300
+    crow.output[3].volts = c:step(73)()/12
+    crow.output[3].slew = c:step(74)()/300
     crow.output[4].action = "{to(5,dyn{attack=1}), to(0,dyn{release=1})}"
-    crow.output[4].dyn.attack = c:step(69)()/40
-    crow.output[4].dyn.release = c:step(70)()/40
+    crow.output[4].dyn.attack = c:step(75)()/40
+    crow.output[4].dyn.release = c:step(76)()/40
     crow.output[4]()
     end
   end
@@ -551,88 +569,88 @@ end
 
 function jfa_event()
   while true do
-    clock.sync(c:step(71)()/c:step(72)())
+    clock.sync(c:step(77)()/c:step(78)())
     if walking then
-    crow.ii.jf.play_voice(1, c:step(73)()/12, j:step(74)())
+    crow.ii.jf.play_voice(1, c:step(79)()/12, j:step(80)())
     end
   end
 end
 
 function jfb_event()
   while true do
-    clock.sync(c:step(75)()/c:step(76)())
+    clock.sync(c:step(81)()/c:step(82)())
     if walking then
-    crow.ii.jf.play_voice(2, c:step(77)()/12, j:step(78)())
+    crow.ii.jf.play_voice(2, c:step(83)()/12, j:step(84)())
     end
   end  
 end
 
 function jfc_event()
   while true do
-    clock.sync(c:step(79)()/c:step(80)())
+    clock.sync(c:step(85)()/c:step(86)())
     if walking then
-    crow.ii.jf.play_voice(3, c:step(81)()/12, j:step(82)())
+    crow.ii.jf.play_voice(3, c:step(87)()/12, j:step(88)())
     end
   end
 end
 
 function jfd_event()
   while true do
-    clock.sync(c:step(83)()/c:step(84)())
+    clock.sync(c:step(89)()/c:step(90)())
     if walking then
-    crow.ii.jf.play_voice(4, c:step(85)()/12, j:step(86)())
+    crow.ii.jf.play_voice(4, c:step(91)()/12, j:step(92)())
     end
   end
 end
 
 function jfe_event()
   while true do
-    clock.sync(c:step(87)()/c:step(88)())
+    clock.sync(c:step(93)()/c:step(94)())
     if walking then
-    crow.ii.jf.play_voice(5, c:step(89)()/12, j:step(90)())
+    crow.ii.jf.play_voice(5, c:step(95)()/12, j:step(96)())
     end
   end
 end
 
 function jff_event()
   while true do
-    clock.sync(c:step(91)()/c:step(92)())
+    clock.sync(c:step(97)()/c:step(98)())
     if walking then
-    crow.ii.jf.play_voice(6, c:step(93)()/12, j:step(94)())
+    crow.ii.jf.play_voice(6, c:step(99)()/12, j:step(100)())
     end
   end
 end
 
 function run_event()
   while true do
-    clock.sync(c:step(95)()/c:step(96)())
+    clock.sync(c:step(101)()/c:step(102)())
     if walking then
-    crow.ii.jf.run(j:step(97)())
+    crow.ii.jf.run(j:step(103)())
     end
   end
 end
 
 function quantize_event()
   while true do
-    clock.sync(c:step(98)()/j:step(99)())
+    clock.sync(c:step(104)()/j:step(105)())
     if walking then
-    crow.ii.jf.quantize(c:step(100)())
+    crow.ii.jf.quantize(c:step(106)())
     end
   end
 end
 
 function with_event()
   while true do
-    clock.sync(c:step(101)()/c:step(102)())
+    clock.sync(c:step(107)()/c:step(108)())
     if walking then
-    crow.ii.wtape.speed(c:step(103)(), c:step(104)())
+    crow.ii.wtape.speed(c:step(109)(), c:step(110)())
     end
   end
 end
 
 function rev_event()
   while true do
-    clock.sync(c:step(105)()/c:step(106)())
+    clock.sync(c:step(111)()/c:step(112)())
     if walking then
     crow.ii.wtape.reverse()
     end
@@ -641,63 +659,63 @@ end
 
 function looper()
   while true do
-    clock.sync(c:step(107)()/c:step(108)())
+    clock.sync(c:step(113)()/c:step(114)())
     if walking then
     crow.ii.wtape.loop_start()
-    clock.sync(c:step(109)()/c:step(110)())
+    clock.sync(c:step(115)()/c:step(116)())
     crow.ii.wtape.loop_end()
-      if c:step(111)() < 17 then
-        for i = 1,j:step(112)() do 
-          clock.sync(c:step(113)()/c:step(114)())
-          crow.ii.wtape.loop_scale(c:step(115)()/c:step(116)())
-          for i = 1,j:step(117)() do
-            clock.sync(c:step(118)()/c:step(119)())
-            crow.ii.wtape.loop_next(c:step(120)()-c:step(121)())
+      if c:step(117)() < 17 then
+        for i = 1,j:step(118)() do 
+          clock.sync(c:step(119)()/c:step(120)())
+          crow.ii.wtape.loop_scale(c:step(121)()/c:step(122)())
+          for i = 1,j:step(123)() do
+            clock.sync(c:step(124)()/c:step(125)())
+            crow.ii.wtape.loop_next(c:step(126)()-c:step(127)())
           end 
         end
-      elseif c:step(111)() >= 17 then
-        for i = 1,j:step(122)() do
-          clock.sync(c:step(123)()/c:step(124)())
-          crow.ii.wtape.loop_next(c:step(125)()-c:step(126)())
-          for i = 1,j:step(127)() do
-            clock.sync(c:step(128)()/c:step(129)())
-            crow.ii.wtape.loop_scale(c:step(130)()/c:step(131)())
+      elseif c:step(117)() >= 17 then
+        for i = 1,j:step(128)() do
+          clock.sync(c:step(129)()/c:step(130)())
+          crow.ii.wtape.loop_next(c:step(131)()-c:step(132)())
+          for i = 1,j:step(133)() do
+            clock.sync(c:step(134)()/c:step(135)())
+            crow.ii.wtape.loop_scale(c:step(136)()/c:step(137)())
           end
         end
       end
-    clock.sync(c:step(132)()/c:step(133)())
+    clock.sync(c:step(138)()/c:step(139)())
     crow.ii.wtape.loop_active(0)
-      for i = 1,c:step(134)() do
-        clock.sync(c:step(135)()/c:step(136)())
-        crow.ii.wtape.seek((c:step(137)()*300)-(c:step(138)()*300))
+      for i = 1,c:step(140)() do
+        clock.sync(c:step(141)()/c:step(142)())
+        crow.ii.wtape.seek((c:step(143)()*300)-(c:step(144)()*300))
       end
-      for i = 1,j:step(139)() do
-        clock.sync(c:step(140)()/c:step(141)())
+      for i = 1,j:step(145)() do
+        clock.sync(c:step(146)()/c:step(147)())
         crow.ii.wtape.loop_active(1)
-        if c:step(142)() < 17 then
-          for i = 1,j:step(91)() do 
-            clock.sync(c:step(92)()/c:step(93)())
-            crow.ii.wtape.loop_scale(c:step(94)()/c:step(95)())
-            for i = 1,j:step(96)() do
-              clock.sync(c:step(97)()/c:step(98)())
-              crow.ii.wtape.loop_next(c:step(99)()-c:step(100)())
+        if c:step(148)() < 17 then
+          for i = 1,j:step(149)() do 
+            clock.sync(c:step(150)()/c:step(151)())
+            crow.ii.wtape.loop_scale(c:step(152)()/c:step(153)())
+            for i = 1,j:step(154)() do
+              clock.sync(c:step(155)()/c:step(156)())
+              crow.ii.wtape.loop_next(c:step(157)()-c:step(158)())
             end 
           end
-        elseif c:step(142)() >= 17 then
-          for i = 1,j:step(143)() do
-            clock.sync(c:step(144)()/c:step(145)())
-            crow.ii.wtape.loop_next(c:step(146)()-c:step(147)())
-            for i = 1,j:step(148)() do
-              clock.sync(c:step(149)()/c:step(150)())
-              crow.ii.wtape.loop_scale(c:step(151)()/c:step(152)())
+        elseif c:step(148)() >= 17 then
+          for i = 1,j:step(159)() do
+            clock.sync(c:step(160)()/c:step(161)())
+            crow.ii.wtape.loop_next(c:step(162)()-c:step(163)())
+            for i = 1,j:step(164)() do
+              clock.sync(c:step(165)()/c:step(166)())
+              crow.ii.wtape.loop_scale(c:step(167)()/c:step(168)())
             end
           end
         end
-        clock.sync(c:step(153)()/c:step(154)())
+        clock.sync(c:step(169)()/c:step(170)())
         crow.ii.wtape.loop_active(0)
-        for i = 1,c:step(155)() do
-          clock.sync(c:step(156)()/c:step(157)())
-          crow.ii.wtape.seek((c:step(158)()*300)-(c:step(159)()*300))
+        for i = 1,c:step(171)() do
+          clock.sync(c:step(171)()/c:step(172)())
+          crow.ii.wtape.seek((c:step(173)()*300)-(c:step(174)()*300))
         end
       end
       end
@@ -706,80 +724,47 @@ end
 
 function withsyna_event()
   while true do
-    clock.sync(c:step(160)()/c:step(161)())
+    clock.sync(c:step(175)()/c:step(176)())
     if walking then
-    crow.ii.wsyn.play_voice(1, c:step(162)()/12, j:step(163)())
+    crow.ii.wsyn.play_voice(1, c:step(177)()/12, j:step(178)())
     end
   end
 end
 
 function withsynb_event()
   while true do
-    clock.sync(c:step(164)()/c:step(165)())
+    clock.sync(c:step(179)()/c:step(180)())
     if walking then
-    crow.ii.wsyn.play_voice(1, c:step(166)()/12, j:step(167)())
+    crow.ii.wsyn.play_voice(1, c:step(181)()/12, j:step(182)())
     end
   end
 end
 
 function withsync_event()
   while true do
-    clock.sync(c:step(168)()/c:step(169)())
+    clock.sync(c:step(183)()/c:step(184)())
     if walking then
-    crow.ii.wsyn.play_voice(1, c:step(170)()/12, j:step(171)())
+    crow.ii.wsyn.play_voice(1, c:step(185)()/12, j:step(186)())
     end
   end
 end
 
 function withsynd_event()
   while true do
-    clock.sync(c:step(172)()/c:step(173)())
+    clock.sync(c:step(187)()/c:step(188)())
     if walking then
-    crow.ii.wsyn.play_voice(1, c:step(174)()/12, j:step(175)())
+    crow.ii.wsyn.play_voice(1, c:step(189)()/12, j:step(190)())
     end
   end
 end
 
 function withsynfmrat_event()
   while true do
-    clock.sync(c:step(190)()/c:step(191)())
+    clock.sync(c:step(191)()/c:step(192)())
     if walking then
-    crow.ii.wsyn.fm_ratio(j:step(192)(),j:step(193)())
+    crow.ii.wsyn.fm_ratio(j:step(193)(),j:step(194)())
     end
   end
-end
-
-function stepfour()
-    while true do
-        clock.sync(s:step(194)()/s:step(195)())
-        if running then
-            local note_num = s:step(196)()
-            local freq = MusicUtil.note_num_to_freq(note_num)
-            LiedMotor.trigfour(freq)
-        end
-    end
-end
-
-function stepfive()
-    while true do
-        clock.sync(s:step(196)()/s:step(197)())
-        if running then
-            local note_num = s:step(198)()
-            local freq = MusicUtil.note_num_to_freq(note_num)
-            LiedMotor.trigfive(freq)
-        end
-    end
-end
-
-function stepsix()
-    while true do
-        clock.sync(s:step(199)()/s:step(200)())
-        if running then
-            local note_num = s:step(201)()
-            local freq = MusicUtil.note_num_to_freq(note_num)
-            LiedMotor.trigsix(freq)
-        end
-    end
 end
 
 function keyboard.char(character)
