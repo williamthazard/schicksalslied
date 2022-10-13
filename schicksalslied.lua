@@ -372,6 +372,10 @@ function init()
   params:set_action('w/syn lpg speed',function(x) crow.ii.wsyn.lpg_time(x) end)
   params:add_control('w/syn lpg symmetry','w/syn lpg symmetry',controlspec.new(-5,5,'lin',0.01,-1,''))
   params:set_action('w/syn lpg symmetry',function(x) crow.ii.wsyn.lpg_symmetry(x) end)
+  params:add_control('w/syn fm num','w/syn fm num',controlspec.new(-5,5,'lin',0.01,1,''))
+  params:set_action('w/syn fm num',function(x) crow.ii.wsyn.fm_ratio(x,params:get('w/syn fm deno')) end)
+  params:add_control('w/syn fm deno','w/syn fm deno',controlspec.new(-5,5,'lin',0.01,1,''))
+  params:set_action('w/syn fm deno',function(x) crow.ii.wsyn.fm_ratio(params:get('w/syn fm num'),x) end)
   params:add_control('w/syn fm index','w/syn fm index',controlspec.new(-5,5,'lin',0.01,0.1,''))
   params:set_action('w/syn fm index',function(x) crow.ii.wsyn.fm_index(x) end)
   params:add_control('w/syn fm envelope','w/syn fm envelope',controlspec.new(-5,5,'lin',0.01,-0.1,''))
@@ -420,7 +424,6 @@ function init()
   clock.run(withsynb_event)
   clock.run(withsync_event)
   clock.run(withsynd_event)
-  clock.run(withsynfmrat_event)
   clock.run(wcheck)
   clock.run(grid_redraw_clock)
   crow.input[1].mode('clock')
@@ -754,15 +757,6 @@ function withsynd_event()
     clock.sync(c:step(187)()/c:step(188)())
     if walking then
     crow.ii.wsyn.play_voice(1, c:step(189)()/12, j:step(190)())
-    end
-  end
-end
-
-function withsynfmrat_event()
-  while true do
-    clock.sync(c:step(191)()/c:step(192)())
-    if walking then
-    crow.ii.wsyn.fm_ratio(j:step(193)(),j:step(194)())
     end
   end
 end
