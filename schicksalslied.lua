@@ -355,6 +355,7 @@ function init()
       shnth = include("shnth/lib/shnth")
       sh.event = shnth.event
   end
+  bpm = clock.get_tempo()
   clock.run(step)
   clock.run(steptwo)
   clock.run(stepthree)
