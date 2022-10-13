@@ -327,7 +327,8 @@ function key(n,z)
     walking = not walking
     if walking then
       print('walking')
-        else print('not walking')
+      crow.ii.wtape.play(1)
+        else print('not walking') crow.ii.wtape.play(0)
     end
   end
 end
@@ -351,9 +352,9 @@ function init()
   params:set_action('w/syn lpg speed',function(x) crow.ii.wsyn.lpg_time(x) end)
   params:add_control('w/syn lpg symmetry','w/syn lpg symmetry',controlspec.new(-5,5,'lin',0.01,-1,''))
   params:set_action('w/syn lpg symmetry',function(x) crow.ii.wsyn.lpg_symmetry(x) end)
-  params:add_control('w/syn fm index','w/syn fm index',controlspec.new(-5,5,'lin',0.01,0.2,''))
+  params:add_control('w/syn fm index','w/syn fm index',controlspec.new(-5,5,'lin',0.01,0.1,''))
   params:set_action('w/syn fm index',function(x) crow.ii.wsyn.fm_index(x) end)
-  params:add_control('w/syn fm envelope','w/syn fm envelope',controlspec.new(-5,5,'lin',0.01,-0.2,''))
+  params:add_control('w/syn fm envelope','w/syn fm envelope',controlspec.new(-5,5,'lin',0.01,-0.1,''))
   params:set_action('w/syn fm envelope',function(x) crow.ii.wsyn.fm_env(x) end)
   screen.aa(0)
   grid_dirty = false
@@ -410,7 +411,7 @@ function init()
   crow.ii.jf.tick(bpm)
   crow.ii.wtape.timestamp(1)
   crow.ii.wtape.freq(0)
-  crow.ii.wtape.play(1)
+  crow.ii.wtape.play(0)
   crow.ii.wsyn.ar_mode(1)
   crow.ii.wsyn.voices(4) 
   crow.ii.wsyn.patch(1,1)
