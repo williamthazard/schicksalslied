@@ -5,7 +5,12 @@ LiedMotor = include('lib/LiedMotor_engine')
 MusicUtil = require "musicutil"
 sequins = require "sequins"
 fileselect = require 'fileselect'
-shnth = {}
+sh = hid.connect(1)
+if sh.device then
+    shnth = include("shnth/lib/shnth")
+    sh.event = shnth.event
+    else shnth = {}
+end
 
 selectedfile = _path.dust.."audio/hermit_leaves.wav"
 
@@ -350,11 +355,6 @@ function init()
   end
   print("schicksalslied")
   softcut_init()
-  sh = hid.connect(2)
-  if sh.device then
-      shnth = include("shnth/lib/shnth")
-      sh.event = shnth.event
-  end
   bpm = clock.get_tempo()
   clock.run(step)
   clock.run(steptwo)
@@ -726,7 +726,7 @@ function withsynlpg_event()
   while true do
     clock.sync(c:step(176)()/c:step(177)())
     if walking then
-    crow.ii.wsyn.lpg_time(c:step(178)()-c:step(179)())
+    crow.ii.wsyn.lpg_time(j:step(178)()-j:step(179)())
     end
   end
 end
@@ -735,7 +735,7 @@ function withsynsym_event()
   while true do
     clock.sync(c:step(179)()/c:step(180)())
     if walking then
-    crow.ii.wsyn.lpg_symmetry(c:step(181)()-c:step(182)())
+    crow.ii.wsyn.lpg_symmetry(j:step(181)()-j:step(182)())
     end
   end
 end
@@ -744,7 +744,7 @@ function withsynfmrat_event()
   while true do
     clock.sync(c:step(190)()/c:step(191)())
     if walking then
-    crow.ii.wsyn.fm_ratio(c:step(192)(),c:step(193)())
+    crow.ii.wsyn.fm_ratio(j:step(192)(),j:step(193)())
     end
   end
 end
