@@ -5,7 +5,6 @@ LiedMotor = include('lib/LiedMotor_engine')
 MusicUtil = require "musicutil"
 sequins = require "sequins"
 fileselect = require 'fileselect'
--- shnth = include("shnth/lib/shnth")
 shnth = {}
 
 selectedfile = _path.dust.."audio/hermit_leaves.wav"
