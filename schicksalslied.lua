@@ -351,7 +351,7 @@ function init()
   end
   print("schicksalslied")
   softcut_init()
-  sh = hid.connect()
+  sh = hid.connect(2)
   if sh.device then
       shnth = include("shnth/lib/shnth")
       sh.event = shnth.event
