@@ -137,7 +137,7 @@ function softone()
   while true do
     clock.sync(s:step(19)()/s:step(20)())
     if going then
-      local firstfade = 1/j:step(21)()
+      local firstfade = 1/c:step(21)()
       softcut.fade_time(1,firstfade)
       softcut.fade_time(2,firstfade)
       local ch,length,rate = audio.file_info(selectedfile)
@@ -201,7 +201,7 @@ function softtwo()
   while true do
     clock.sync(s:step(34)()/s:step(35)())
     if going then
-      local secondfade = 1/j:step(36)()
+      local secondfade = 1/c:step(36)()
       softcut.fade_time(3,secondfade)
       softcut.fade_time(4,secondfade)
       local ch,length,rate = audio.file_info(selectedfile)
@@ -263,7 +263,7 @@ function softthree()
   while true do
     clock.sync(s:step(49)()/s:step(50)())
     if going then
-      local thirdfade = 1/j:step(51)()
+      local thirdfade = 1/c:step(51)()
       softcut.fade_time(5,thirdfade)
       softcut.fade_time(6,thirdfade)
       local ch,length,rate = audio.file_info(selectedfile)
