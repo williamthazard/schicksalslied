@@ -327,8 +327,7 @@ function key(n,z)
     walking = not walking
     if walking then
       print('walking')
-      crow.ii.wtape.play(1)
-        else print('not walking') crow.ii.wtape.play(0)
+        else print('not walking')
     end
   end
 end
@@ -404,6 +403,7 @@ function init()
   clock.run(withsync_event)
   clock.run(withsynd_event)
   clock.run(withsynfmrat_event)
+  clock.run(wcheck)
   clock.run(grid_redraw_clock)
   crow.input[1].mode('clock')
   crow.ii.jf.mode(1)
@@ -509,6 +509,16 @@ function set()
     end
     starter = util.linlin(49,80,0,seclength,s:step(58)())
     softcut.buffer_read_stereo(selectedfile, starter, 0, -1, 0, 1)
+end
+
+function wcheck()
+  while true do
+    clock.sleep(1/30)
+    if walking then
+      crow.ii.wtape.play(1)
+      else crow.ii.wtape.play(0)
+    end
+  end
 end
 
 function notes_event()
