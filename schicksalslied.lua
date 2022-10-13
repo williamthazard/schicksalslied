@@ -5,7 +5,8 @@ LiedMotor = include('lib/LiedMotor_engine')
 MusicUtil = require "musicutil"
 sequins = require "sequins"
 fileselect = require 'fileselect'
-shnth = include("shnth/lib/shnth")
+-- shnth = include("shnth/lib/shnth")
+shnth = {}
 
 selectedfile = _path.dust.."audio/hermit_leaves.wav"
 
@@ -350,8 +351,11 @@ function init()
   end
   print("schicksalslied")
   softcut_init()
-  sh = hid.connect()
-  sh.event = shnth.event
+  sh = hid.connect(2)
+  if sh.device then
+      shnth = include("shnth/lib/shnth")
+      sh.event = shnth.event
+  end
   clock.run(step)
   clock.run(steptwo)
   clock.run(stepthree)
