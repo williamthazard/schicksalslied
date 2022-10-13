@@ -334,16 +334,27 @@ end
 
 function init()
   LiedMotor.add_params() -- adds params via the `.add params()` function defined in LiedMotor_engine.lua
+  params:add_separator('load files','load files')
   params:add_file('audio file','audio file')
   params:set_action('audio file', function(file) selectedfile=file end)
   params:add_file('text file','text file')
   params:set_action('text file',function(file) io.input(file) Split(file) grid_redraw() end)
+  params:add_separator('softcut','softcut')
   params:add_control('softcut_1','softcut_1',controlspec.new(0,1,'lin',0.01,1,''))
   params:set_action('softcut_1',function(x) softcut.level(1,x) softcut.level(2,x) end)
   params:add_control('softcut_2','softcut_2',controlspec.new(0,1,'lin',0.01,1,''))
   params:set_action('softcut_2',function(x) softcut.level(3,x) softcut.level(4,x) end)
   params:add_control('softcut_3','softcut_3',controlspec.new(0,1,'lin',0.01,1,''))
   params:set_action('softcut_3',function(x) softcut.level(5,x) softcut.level(6,x) end)
+  params:add_separator('w/syn','w/syn')
+  params:add_control('w/syn lpg speed','w/syn lpg speed',controlspec.new(-5,5,'lin',0.01,-3,''))
+  params:set_action('w/syn lpg speed',function(x) crow.ii.wsyn.lpg_time(x) end)
+  params:add_control('w/syn lpg symmetry','w/syn lpg symmetry',controlspec.new(-5,5,'lin',0.01,-1,''))
+  params:set_action('w/syn lpg symmetry',function(x) crow.ii.wsyn.lpg_symmetry(x) end)
+  params:add_control('w/syn fm index','w/syn fm index',controlspec.new(-5,5,'lin',0.01,0.2,''))
+  params:set_action('w/syn fm index',function(x) crow.ii.wsyn.fm_index(x) end)
+  params:add_control('w/syn fm envelope','w/syn fm envelope',controlspec.new(-5,5,'lin',0.01,-0.2,''))
+  params:set_action('w/syn fm envelope',function(x) crow.ii.wsyn.fm_env(x) end)
   screen.aa(0)
   grid_dirty = false
   momentary = {}
@@ -391,8 +402,6 @@ function init()
   clock.run(withsynb_event)
   clock.run(withsync_event)
   clock.run(withsynd_event)
-  clock.run(withsynlpg_event)
-  clock.run(withsynsym_event)
   clock.run(withsynfmrat_event)
   clock.run(grid_redraw_clock)
   crow.input[1].mode('clock')
@@ -406,8 +415,6 @@ function init()
   crow.ii.wsyn.voices(4) 
   crow.ii.wsyn.patch(1,1)
   crow.ii.wsyn.patch(2,2)
-  crow.ii.wsyn.fm_index(1)
-  crow.ii.wsyn.fm_env(0)
 end
 
 function shnth.bar(n, d)
@@ -718,24 +725,6 @@ function withsynd_event()
     clock.sync(c:step(172)()/c:step(173)())
     if walking then
     crow.ii.wsyn.play_voice(1, c:step(174)()/12, j:step(175)())
-    end
-  end
-end
-
-function withsynlpg_event()
-  while true do
-    clock.sync(c:step(176)()/c:step(177)())
-    if walking then
-    crow.ii.wsyn.lpg_time(j:step(178)()-j:step(179)())
-    end
-  end
-end
-
-function withsynsym_event()
-  while true do
-    clock.sync(c:step(179)()/c:step(180)())
-    if walking then
-    crow.ii.wsyn.lpg_symmetry(j:step(181)()-j:step(182)())
     end
   end
 end
