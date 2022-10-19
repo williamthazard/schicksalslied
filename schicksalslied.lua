@@ -992,10 +992,12 @@ g.key = function(x,y,z)
         end
       end
       if not flag then
-        set()
-        my_string = ""
-        new_line = true
-        redraw()
+        if my_string ~= "" then
+          set()
+          my_string = ""
+          new_line = true
+          redraw()
+        end
       end
     end
   end
