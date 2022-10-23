@@ -66,7 +66,7 @@ end
 
 function step()
     while true do
-        clock.sync(s:step(2)()/s:step(3)())
+        clock.sync((s:step(2)()/s:step(3)())*sinsindiv)
         if running then
             local note_num = s()
             local freq = MusicUtil.note_num_to_freq(note_num)
@@ -77,18 +77,18 @@ end
 
 function steptwo()
     while true do
-        clock.sync(s:step(4)()/s:step(5)())
+        clock.sync((s:step(4)()/s:step(5)())*tritridiv)
         if running then
             local note_num = s:step(6)()
             local freq = MusicUtil.note_num_to_freq(note_num)
-            LiedMotor.trigtrisin(freq)
+            LiedMotor.trigtritri(freq)
         end
     end
 end
 
 function stepthree()
     while true do
-        clock.sync(s:step(7)()/s:step(8)())
+        clock.sync((s:step(7)()/s:step(8)())*ringerdiv)
         if running then
             local note_num = s:step(9)()
             local freq = MusicUtil.note_num_to_freq(note_num)
@@ -366,6 +366,13 @@ function init()
   params:set_action('w/syn fm index',function(x) crow.ii.wsyn.fm_index(x) end)
   params:add_control('w/syn fm envelope','w/syn fm envelope',controlspec.new(-5,5,'lin',0.01,-0.1,''))
   params:set_action('w/syn fm envelope',function(x) crow.ii.wsyn.fm_env(x) end)
+  params:add_separator('clock divs','clock divs')
+  params:add_control('sinsin div','sinsin div',controlspec.new(1,64,'lin',1,1,''))
+  params:set_action('sinsin div',function(x) sinsindiv=x end)
+  params:add_control('tritri div','tritri div',controlspec.new(1,64,'lin',1,1,''))
+  params:set_action('tritri div',function(x) tritridiv=x end)
+  params:add_control('ringer div','ringer div',controlspec.new(1,64,'lin',1,1,''))
+  params:set_action('ringer div',function(x) ringerdiv=x end)
   params:bang()
   params:add_separator('load files','load files')
   params:add_file('audio file','audio file')
@@ -429,13 +436,13 @@ function init()
 end
 
 function shnth.bar(n, d)
-  params:set('LiedMotor_tritri_index',d)
+  params:set('LiedMotor_trisin_index',d)
   if d > 0.2 then
     for i=1,4 do
       if n==i then
         local note_num = s[i]
         local freq = MusicUtil.note_num_to_freq(note_num)
-        LiedMotor.trigtritri(freq)
+        LiedMotor.trigtrisin(freq)
       end
     end
   end
