@@ -10,9 +10,9 @@ sequins = require "sequins"
 fileselect = require 'fileselect'
 sh = hid.connect(1)
 if sh.device then
-    shnth = include("shnth/lib/shnth")
-    sh.event = shnth.event
-    else shnth = {}
+  shnth = include("shnth/lib/shnth")
+  sh.event = shnth.event
+  else shnth = {}
 end
 
 selectedfile = _path.dust.."audio/hermit_leaves.wav"
@@ -70,7 +70,7 @@ function step()
         if running then
             local note_num = s()
             local freq = MusicUtil.note_num_to_freq(note_num)
-            LiedMotor.trig(freq)
+            LiedMotor.trigsinsin(freq)
         end
     end
 end
@@ -81,7 +81,7 @@ function steptwo()
         if running then
             local note_num = s:step(6)()
             local freq = MusicUtil.note_num_to_freq(note_num)
-            LiedMotor.trigtwo(freq)
+            LiedMotor.trigtrisin(freq)
         end
     end
 end
@@ -92,40 +92,7 @@ function stepthree()
         if running then
             local note_num = s:step(9)()
             local freq = MusicUtil.note_num_to_freq(note_num)
-            LiedMotor.trigthree(freq)
-        end
-    end
-end
-
-function stepfour()
-    while true do
-        clock.sync(s:step(10)()/s:step(11)())
-        if running then
-            local note_num = s:step(12)()
-            local freq = MusicUtil.note_num_to_freq(note_num)
-            LiedMotor.trigfour(freq)
-        end
-    end
-end
-
-function stepfive()
-    while true do
-        clock.sync(s:step(13)()/s:step(14)())
-        if running then
-            local note_num = s:step(15)()
-            local freq = MusicUtil.note_num_to_freq(note_num)
-            LiedMotor.trigfive(freq)
-        end
-    end
-end
-
-function stepsix()
-    while true do
-        clock.sync(s:step(16)()/s:step(17)())
-        if running then
-            local note_num = s:step(18)()
-            local freq = MusicUtil.note_num_to_freq(note_num)
-            LiedMotor.trigsix(freq)
+            LiedMotor.trigringer(freq)
         end
     end
 end
@@ -379,17 +346,12 @@ function init()
   restart_message = UI.Message.new{"please restart norns"}
   if needs_restart then redraw() return end
   LiedMotor.add_params() -- adds params via the `.add params()` function defined in LiedMotor_engine.lua
-  params:add_separator('load files','load files')
-  params:add_file('audio file','audio file')
-  params:set_action('audio file', function(file) selectedfile=file end)
-  params:add_file('text file','text file')
-  params:set_action('text file',function(file) io.input(file) Split(file) grid_redraw() end)
   params:add_separator('softcut','softcut')
   params:add_control('softcut_1','softcut_1',controlspec.new(0,1,'lin',0.01,1,''))
   params:set_action('softcut_1',function(x) softcut.level(1,x) softcut.level(2,x) end)
-  params:add_control('softcut_2','softcut_2',controlspec.new(0,1,'lin',0.01,1,''))
+  params:add_control('softcut_2','softcut_2',controlspec.new(0,1,'lin',0.01,0,''))
   params:set_action('softcut_2',function(x) softcut.level(3,x) softcut.level(4,x) end)
-  params:add_control('softcut_3','softcut_3',controlspec.new(0,1,'lin',0.01,1,''))
+  params:add_control('softcut_3','softcut_3',controlspec.new(0,1,'lin',0.01,0,''))
   params:set_action('softcut_3',function(x) softcut.level(5,x) softcut.level(6,x) end)
   params:add_separator('w/syn','w/syn')
   params:add_control('w/syn lpg speed','w/syn lpg speed',controlspec.new(-5,5,'lin',0.01,-3,''))
@@ -404,6 +366,12 @@ function init()
   params:set_action('w/syn fm index',function(x) crow.ii.wsyn.fm_index(x) end)
   params:add_control('w/syn fm envelope','w/syn fm envelope',controlspec.new(-5,5,'lin',0.01,-0.1,''))
   params:set_action('w/syn fm envelope',function(x) crow.ii.wsyn.fm_env(x) end)
+  params:bang()
+  params:add_separator('load files','load files')
+  params:add_file('audio file','audio file')
+  params:set_action('audio file', function(file) selectedfile=file end)
+  params:add_file('text file','text file')
+  params:set_action('text file',function(file) io.input(file) Split(file) grid_redraw() end)
   screen.aa(0)
   grid_dirty = false
   momentary = {}
@@ -419,9 +387,6 @@ function init()
   clock.run(step)
   clock.run(steptwo)
   clock.run(stepthree)
-  clock.run(stepfour)
-  clock.run(stepfive)
-  clock.run(stepsix)
   clock.run(softone)
   clock.run(softtwo)
   clock.run(softthree)
@@ -464,13 +429,13 @@ function init()
 end
 
 function shnth.bar(n, d)
-  params:set('LiedMotor_index7',d)
+  params:set('LiedMotor_tritri_index',d)
   if d > 0.2 then
     for i=1,4 do
       if n==i then
         local note_num = s[i]
         local freq = MusicUtil.note_num_to_freq(note_num)
-        LiedMotor.trigseven(freq)
+        LiedMotor.trigtritri(freq)
       end
     end
   end
@@ -482,7 +447,7 @@ function shnth.major(n, z)
       if n==i then
         local note_num = s[i+4]
         local freq = MusicUtil.note_num_to_freq(note_num)
-        LiedMotor.trigeight(freq)
+        LiedMotor.trigkarplu(freq)
       end
     end
   end
@@ -494,7 +459,7 @@ function shnth.minor(n, z)
       if n==i then
         local note_num = s[i+8]
         local freq = MusicUtil.note_num_to_freq(note_num)
-        LiedMotor.trigeight(freq)
+        LiedMotor.trigresonz(freq)
       end
     end
   end
