@@ -3,66 +3,47 @@ local Formatters = require 'formatters'
 
 -- first, we'll collect all of our commands into norns-friendly ranges
 local specs = {
-  ["mul1"] = controlspec.new(0, 2, "lin", 0, 0.5, ""),
-  ["mul2"] = controlspec.new(0, 2, "lin", 0, 0.4, ""),
-  ["mul3"] = controlspec.new(0, 2, "lin", 0, 0.3, ""),
-  ["mul4"] = controlspec.new(0, 2, "lin", 0, 0.3, ""),
-  ["mul5"] = controlspec.new(0, 2, "lin", 0, 0.2, ""),
-  ["mul6"] = controlspec.new(0, 2, "lin", 0, 0.2, ""),
-  ["mul7"] = controlspec.new(0, 2, "lin", 0, 0.6, ""),
-  ["mul8"] = controlspec.new(0, 2, "lin", 0, 0.6, ""),
-  ["modfreq1"] = controlspec.FREQ,
-  ["modfreq2"] = controlspec.FREQ,
-  ["modfreq3"] = controlspec.FREQ,
-  ["modfreq4"] = controlspec.FREQ,
-  ["modfreq5"] = controlspec.FREQ,
-  ["modfreq6"] = controlspec.FREQ,
-  ["modfreq7"] = controlspec.FREQ,
-  ["modfreq8"] = controlspec.FREQ,
-  ["index1"] = controlspec.new(0, 24, "lin", 0, 0, ""),
-  ["index2"] = controlspec.new(0, 24, "lin", 0, 0, ""),
-  ["index3"] = controlspec.new(0, 24, "lin", 0, 1, ""),
-  ["index4"] = controlspec.new(0, 24, "lin", 0, 2, ""),
-  ["index5"] = controlspec.new(0, 24, "lin", 0, 3, ""),
-  ["index6"] = controlspec.new(0, 24, "lin", 0, 4, ""),
-  ["index7"] = controlspec.new(0, 24, "lin", 0, 0, ""),
-  ["index8"] = controlspec.new(0, 24, "lin", 0, 0, ""),
-  ["attack1"] = controlspec.new(0.003, 8, "exp", 0, 0, "s"),
-  ["attack2"] = controlspec.new(0.003, 8, "exp", 0, 0, "s"),
-  ["attack3"] = controlspec.new(0.003, 8, "exp", 0, 0, "s"),
-  ["attack4"] = controlspec.new(0.003, 8, "exp", 0, 0, "s"),
-  ["attack5"] = controlspec.new(0.003, 8, "exp", 0, 0, "s"),
-  ["attack6"] = controlspec.new(0.003, 8, "exp", 0, 0, "s"),
-  ["attack7"] = controlspec.new(0.003, 8, "exp", 0, 1, "s"),
-  ["attack8"] = controlspec.new(0.003, 8, "exp", 0, 1, "s"),
-  ["release1"] = controlspec.new(0.003, 8, "exp", 0, 1, "s"),
-  ["release2"] = controlspec.new(0.003, 8, "exp", 0, 1, "s"),
-  ["release3"] = controlspec.new(0.003, 8, "exp", 0, 1, "s"),
-  ["release4"] = controlspec.new(0.003, 8, "exp", 0, 1, "s"),
-  ["release5"] = controlspec.new(0.003, 8, "exp", 0, 1, "s"),
-  ["release6"] = controlspec.new(0.003, 8, "exp", 0, 1, "s"),
-  ["release7"] = controlspec.new(0.003, 8, "exp", 0, 2, "s"),
-  ["release8"] = controlspec.new(0.003, 8, "exp", 0, 2, "s"),
-  ["phase1"] = controlspec.new(0, 4, "lin", 0, 1, ""),
-  ["phase2"] = controlspec.new(0, 4, "lin", 0, 1, ""),
-  ["phase3"] = controlspec.new(0, 4, "lin", 0, 1, ""),
-  ["phase4"] = controlspec.new(0, 4, "lin", 0, 1, ""),
-  ["phase5"] = controlspec.new(0, 4, "lin", 0, 1, ""),
-  ["phase6"] = controlspec.new(0, 4, "lin", 0, 1, ""),
-  ["phase7"] = controlspec.new(0, 4, "lin", 0, 1, ""),
-  ["phase8"] = controlspec.new(0, 4, "lin", 0, 1, ""),
-  ["pan1"] = controlspec.PAN,
-  ["pan2"] = controlspec.PAN,
-  ["pan3"] = controlspec.PAN,
-  ["pan4"] = controlspec.PAN,
-  ["pan5"] = controlspec.PAN,
-  ["pan6"] = controlspec.PAN,
-  ["pan7"] = controlspec.PAN,
-  ["pan8"] = controlspec.PAN
+  ["sinsin_amp"] = controlspec.AMP,
+  ["trisin_amp"] = controlspec.AMP,
+  ["ringer_amp"] = controlspec.AMP,
+  ["tritri_amp"] = controlspec.AMP,
+  ["karplu_amp"] = controlspec.AMP,
+  ["resonz_amp"] = controlspec.new(0, 100, "lin", 0, 0.2, ""),
+  ["sinsin_modnum"] = controlspec.new(0, 100, "lin", 1, 1, ""),
+  ["sinsin_modeno"] = controlspec.new(0, 100, "lin", 1, 1, ""),
+  ["trisin_modnum"] = controlspec.new(0, 100, "lin", 1, 1, ""),
+  ["trisin_modeno"] = controlspec.new(0, 100, "lin", 1, 1, ""),
+  ["tritri_width"] = controlspec.AMP,
+  ["tritri_modwidth"] = controlspec.AMP,
+  ["tritri_modnum"] = controlspec.new(0, 100, "lin", 1, 1, ""),
+  ["tritri_modeno"] = controlspec.new(0, 100, "lin", 1, 1, ""),
+  ["karplu_coef"] = controlspec.new(-1, 1, "lin", 0, 0.5, ""),
+  ["sinsin_index"] = controlspec.new(-24, 24, "lin", 0, 0, ""),
+  ["trisin_index"] = controlspec.new(-24, 24, "lin", 0, 0, ""),
+  ["ringer_index"] = controlspec.new(0, 24, "lin", 0, 3, ""),
+  ["tritri_index"] = controlspec.new(-24, 24, "lin", 0, 0, ""),
+  ["karplu_index"] = controlspec.new(0, 24, "lin", 0, 3, ""),
+  ["resonz_index"] = controlspec.new(0, 1, "lin", 0, 0.1, ""),
+  ["sinsin_attack"] = controlspec.new(0.003, 8, "exp", 0, 0, "s"),
+  ["trisin_attack"] = controlspec.new(0.003, 8, "exp", 0, 0, "s"),
+  ["tritri_attack"] = controlspec.new(0.003, 8, "exp", 0, 0, "s"),
+  ["sinsin_release"] = controlspec.new(0.003, 8, "exp", 0, 1, "s"),
+  ["trisin_release"] = controlspec.new(0.003, 8, "exp", 0, 1, "s"),
+  ["tritri_release"] = controlspec.new(0.003, 8, "exp", 0, 1, "s"),
+  ["sinsin_phase"] = controlspec.PHASE,
+  ["trisin_phase"] = controlspec.PHASE,
+  ["tritri_phase"] = controlspec.PHASE,
+  ["tritri_modphase"] = controlspec.PHASE,
+  ["sinsin_pan"] = controlspec.PAN,
+  ["trisin_pan"] = controlspec.PAN,
+  ["ringer_pan"] = controlspec.PAN,
+  ["tritri_pan"] = controlspec.PAN,
+  ["karplu_pan"] = controlspec.PAN,
+  ["resonz_pan"] = controlspec.PAN
 }
 
 -- this table establishes an order for parameter initialization:
-local param_names = {"index1","attack1","release1","phase1","mul1","pan1","modfreq1","index2","attack2","release2","phase2","mul2","pan2","modfreq2","index3","attack3","release3","phase3","mul3","pan3","modfreq3","index4","attack4","release4","phase4","mul4","pan4","modfreq4","index5","attack5","release5","phase5","mul5","pan5","modfreq5","index6","attack6","release6","phase6","mul6","pan6","modfreq6","index7","attack7","release7","phase7","mul7","pan7","modfreq7","index8","attack8","release8","phase8","mul8","pan8","modfreq8"}
+local param_names = {"sinsin_attack","sinsin_release","sinsin_phase","sinsin_index","sinsin_modnum","sinsin_modeno","sinsin_amp","sinsin_pan","trisin_attack","trisin_release","trisin_phase","trisin_index","trisin_modnum","trisin_modeno","trisin_amp","trisin_pan","ringer_index","ringer_amp","ringer_pan","tritri_attack","tritri_release","tritri_width","tritri_modwidth","tritri_phase","tritri_modphase","tritri_index","tritri_modnum","tritri_modeno","tritri_amp","tritri_pan","karplu_index","karplu_coef","karplu_amp","karplu_pan","resonz_index","resonz_amp","resonz_pan"}
 
 -- initialize parameters:
 function LiedMotor.add_params()
@@ -85,51 +66,39 @@ function LiedMotor.add_params()
 end
 
 -- a single-purpose triggering command fire a note
-function LiedMotor.trig(hz)
+function LiedMotor.trigsinsin(hz)
   if hz ~= nil then
-    engine.hzone(hz)
+    engine.sinsinhz(hz)
   end
 end
 
-function LiedMotor.trigtwo(hz)
+function LiedMotor.trigtrisin(hz)
   if hz ~= nil then
-    engine.hztwo(hz)
+    engine.trisinhz(hz)
   end
 end
 
-function LiedMotor.trigthree(hz)
+function LiedMotor.trigringer(hz)
   if hz ~= nil then
-    engine.hzthree(hz)
+    engine.ringerhz(hz)
   end
 end
 
-function LiedMotor.trigfour(hz)
+function LiedMotor.trigtritri(hz)
   if hz ~= nil then
-    engine.hzfour(hz)
+    engine.tritrihz(hz)
   end
 end
 
-function LiedMotor.trigfive(hz)
+function LiedMotor.trigkarplu(hz)
   if hz ~= nil then
-    engine.hzfive(hz)
+    engine.karpluhz(hz)
   end
 end
 
-function LiedMotor.trigsix(hz)
+function LiedMotor.trigresonz(hz)
   if hz ~= nil then
-    engine.hzsix(hz)
-  end
-end
-
-function LiedMotor.trigseven(hz)
-  if hz ~= nil then
-    engine.hzseven(hz)
-  end
-end
-
-function LiedMotor.trigeight(hz)
-  if hz ~= nil then
-    engine.hzeight(hz)
+    engine.resonzhz(hz)
   end
 end
 
