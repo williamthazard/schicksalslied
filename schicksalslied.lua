@@ -1,6 +1,9 @@
 ---schicksalslied
 
-engine.name = 'LiedMotor'
+local extensions = "/home/we/.local/share/SuperCollider/Extensions"
+engine.name = util.file_exists(extensions .. "/PulsePTR/PulsePTR.sc") and
+  util.file_exists(extensions .. "/FormantTriPTR/FormantTriPTR.sc") and 'LiedMotor' or nil
+UI = require "ui"
 LiedMotor = include('lib/LiedMotor_engine')
 MusicUtil = require "musicutil"
 sequins = require "sequins"
@@ -354,6 +357,27 @@ function key(n,z)
 end
 
 function init()
+  needs_restart = false
+  local pulse_files = {"PulsePTR.sc", "PulsePTR_scsynth.so"}
+  local formanttri_files = {"FormantTriPTR.sc", "FormantTriPTR_scsynth.so"}
+  for _,file in pairs(pulse_files) do
+    if not util.file_exists(extensions .. "/PulsePTR/" .. file) then
+      util.os_capture("mkdir " .. extensions .. "/PulsePTR")
+      util.os_capture("cp " .. norns.state.path .. "/ignore/" .. file .. " " .. extensions .. "/PulsePTR/" .. file)
+      print("installed " .. file)
+      needs_restart = true
+    end
+  end
+  for _,file in pairs(formanttri_files) do
+    if not util.file_exists(extensions .. "/FormantTriPTR/" .. file) then
+      util.os_capture("mkdir " .. extensions .. "/FormantTriPTR")
+      util.os_capture("cp " .. norns.state.path .. "/ignore/" .. file .. " " .. extensions .. "/FormantTriPTR/" .. file)
+      print("installed " .. file)
+      needs_restart = true
+    end
+  end
+  restart_message = UI.Message.new{"please restart norns"}
+  if needs_restart then redraw() return end
   LiedMotor.add_params() -- adds params via the `.add params()` function defined in LiedMotor_engine.lua
   params:add_separator('load files','load files')
   params:add_file('audio file','audio file')
@@ -801,6 +825,12 @@ function keyboard.code(code,value)
 end
 
 function redraw()
+  if needs_restart then
+    screen.clear()
+    restart_message:redraw()
+    screen.update()
+    return
+  end
   screen.clear()
   screen.level(10)
   screen.rect(2, 50, 125, 14)
