@@ -11,7 +11,7 @@ For method 1, you can hit enter on your keyboard to send your line to schicksals
 <br>
 History items can also be accessed with a grid. When a line is added to history, a square on the grid will be soft-lit. That square holds the line. You can access the line again by pressing that button. When the button is held down, the line it holds will be displayed in schicksalslied's text field. When the button is released, that line becomes the active line. You can also combine lines with grid, by holding down multiple buttons and releasing them simultaneously. The lines will be combined in the order in which the buttons are pressed.<br>
 <br>
-For method 2, your imported .txt file will be broken up by line breaks. Each line will get its own square on the grid. If your file exceeds 128 lines, only the first 128 lines will be available on the grid. But no line will be active by default. You'll need to select one. You can do this with a keyboard or a grid, using the methods described above. If you're looking for somewhere to store your .txt files on norns, there's a "text files" folder located within the "lib" folder for schicksalslied. There's one poem there already, to get you started.<br>
+For method 2, your imported .txt file will be broken up by line breaks. Each line will be added to history and will get its own square on the grid. If your file exceeds 128 lines, only the first 128 lines will be available on the grid. But no line will be active by default. You'll need to select one. You can do this with a keyboard or a grid, using the methods described above. If you're looking for somewhere to store your .txt files on norns, there's a "text files" folder located within the "lib" folder for schicksalslied. There's one poem there already, to get you started.<br>
 <br>
 <b>Turning Text into Music</b>
 
@@ -29,7 +29,7 @@ Once you've got an active line, you can activate the LiedMotor engine by pressin
 5) karplu (a karplus-strong-style physical modeling string synthesis voice)
 6) resonz (a pinged resonant filter without variable decay)
 
-You can activate each of these voices by turning up its "amp" parameter in the LiedMotor section of the parameters menu. Each of the voices interprets your text in its own way. You might think of them as a jazz combo "playing the changes." In this sense, a "chord" would correspond to a line. You can change between chords by entereing more lines or choosing different lines from history using the "up" arrow or grid button presses.<br>
+You can activate each of these voices by turning up its "amp" parameter in the LiedMotor section of the parameters menu. Each of the voices interprets your text in its own way. You might think of them as a jazz combo "playing the changes." In this sense, a "chord" would correspond to a line. You can change between chords by entering more lines or choosing different lines from history using the "up" arrow or grid button presses.<br>
 <br>
 You can also shape the timbre of each voice in the LiedMotor section of the parameters menu. There are a lot of parameters. MIDI mapping can be very helpful for managing them all. You can also modulate any of these parameters with LFOs, using the LFOs section of the parameters menu.<br>
 <br>
