@@ -37,7 +37,7 @@ You can also shape the timbre of each voice in the LiedMotor section of the para
 You can import an audio file into schicksalslied using the "audio file" feature in the params menu. Then you can start it playing with K2. Schicksalslied will use norns's softcut features to manipulate your audio file in ways that are determined by the text in the line you've entered. There are three manipulated-audio voices available. Each manipulates audio in its own way. Their levels can be adjusted in the params menu.<br>
 <br>
 <i>Crow</i><br>
-You can activate crow features using K1. This works in essentially the same way as the krahenlied script for crow and druid. Documentation for krahenlied can be found at https://github.com/williamthazard/krahenlied/blob/main/README.md.<br> As with krahenlied, the text you've entered will determine the following:
+You can activate crow features using K1. This works in essentially the same way as the krahenlied script for crow and druid. Documentation for krahenlied can be found at https://github.com/williamthazard/krahenlied/blob/main/README.md. As with krahenlied, the text you've entered will determine the following:
 1) pitch (v/8) from crow outputs 1 & 3
 2) slew time between pitches from outputs 1 & 3
 3) AR envelope shapes from outputs 2 & 4
