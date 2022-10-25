@@ -1,6 +1,8 @@
 # schicksalslied
 a poetry sequencer for monome norns
 
+<i>note: you will need to restart norns after installing this script, in order to install the LiedMotor engine the script uses</i>
+
 <b>Entering Text</b>
 
 Schicksalslied begins with a text field. You can input text into the field in two ways:
