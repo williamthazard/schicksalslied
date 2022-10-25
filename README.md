@@ -51,7 +51,7 @@ You can activate crow features using K1. This works in essentially the same way 
 11) playhead position on w/tape
 12) clock synch divisions for all of the above
 
-Unlike krahenlied, schicksalsleid can also play w/syn's 4 voices. W/syn's timbre can be shaped in the parameters menu.<br>
+Unlike krahenlied, schicksalsleid can also play w/syn's 4 voices. W/syn's "this" and "that" inputs will be set up to modulate its "curve" and "ramp" parameters, respectively, by default. Other aspects of w/syn's timbre can be shaped in the parameters menu.<br>
 
 <b>A Note on Clock Divs</b>
 
