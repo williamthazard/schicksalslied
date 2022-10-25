@@ -1,7 +1,7 @@
 # schicksalslied
 a poetry sequencer for monome norns
 
-<i>note: you will need to restart norns after installing this script, in order to install the LiedMotor engine the script uses</i>
+<i>note: you will need to restart norns after installing this script, in order to install the LiedMotor synth engine the script uses</i>
 
 <b>Entering Text</b>
 
