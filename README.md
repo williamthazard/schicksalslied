@@ -7,7 +7,7 @@ Schicksalslied begins with a text field. You can input text into the field in tw
 1) by attaching a keyboard to one of norns's usb ports and typing (20 characters max)
 2) loading a .txt file into norns and importing it into schicksalslied using the "text file" feature in the params menu
 
-For method 1, you can hit enter on your keyboard to send your line to schicksalslied. Each line you enter will be added to history. History items can be accessed by hitting the "up" arrow on your keyboard. The history item will appear in the text field. Then you can hit enter again to make that line the active line.<br>
+For method 1, you can hit enter on your keyboard to send your line to schicksalslied. Each line you enter will be added to history. History items can be accessed by hitting the "up" arrow on your keyboard. The currently-selected history item will appear in the text field. Then you can hit enter again to make that line the active line.<br>
 <br>
 History items can also be accessed with a grid. When a line is added to history, a square on the grid will be soft-lit. That square holds the line. You can access the line again by pressing that button. When the button is held down, the line it holds will be displayed in schicksalslied's text field. When the button is released, that line becomes the active line. You can also combine lines with grid, by holding down multiple buttons. The lines will be combined in the order in which the buttons are pressed.<br>
 <br>
