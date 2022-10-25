@@ -15,7 +15,7 @@ For method 2, your imported .txt file will be broken up by line breaks. Each lin
 <br>
 <b>Turning Text into Music</b>
 
-Once you've entered your text, there are three ways to turn it into music. They can all be used simultaneously if you like.
+Once you've entered your text, there are three ways to turn it into music. They can all be used simultaneously.
 1) with the LiedMotor synth engine
 2) with an imported audio file
 3) with crow
