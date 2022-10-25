@@ -11,7 +11,7 @@ For method 1, you can hit enter on your keyboard to send your line to schicksals
 <br>
 History items can also be accessed with a grid. When a line is added to history, a square on the grid will be soft-lit. That square holds the line. You can access the line again by pressing that button. When the button is held down, the line it holds will be displayed in schicksalslied's text field. When the button is released, that line becomes the active line. You can also combine lines with grid, by holding down multiple buttons. The lines will be combined in the order in which the buttons are pressed.<br>
 <br>
-For method 2, your imported .txt file will be broken up by line breaks. Each line will get its own square on the grid. But no line will be active. You'll need to select one. You can do this with a keyboard or a grid, using the methods described above. If you're looking for somewhere to store your .txt files on norns, there's a "text files" folder located within the "lib" folder for schicksalslied. There's one poem there already, to get you started.<br>
+For method 2, your imported .txt file will be broken up by line breaks. Each line will get its own square on the grid. If your file exceeds 128 lines, only the first 128 lines will be available on the grid. But no line will be active by default. You'll need to select one. You can do this with a keyboard or a grid, using the methods described above. If you're looking for somewhere to store your .txt files on norns, there's a "text files" folder located within the "lib" folder for schicksalslied. There's one poem there already, to get you started.<br>
 <br>
 <b>Turning Text into Music</b>
 
