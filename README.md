@@ -29,7 +29,7 @@ Once you've got an active line, you can activate the LiedMotor engine by pressin
 5) karplu (a karplus-strong-style physical modeling string synthesis voice)
 6) resonz (a pinged resonant filter without variable decay)
 
-You can activate each of these voices by turning up its "amp" parameter in the LiedMotor section of the parameters menu. Each of the voices interprets your text in its own way. You might think of them as a jazz combo "playing the changes." In this sense, a "chord" would correspond to a line. You can change between them by entereing more lines or choosing from history.<br>
+You can activate each of these voices by turning up its "amp" parameter in the LiedMotor section of the parameters menu. Each of the voices interprets your text in its own way. You might think of them as a jazz combo "playing the changes." In this sense, a "chord" would correspond to a line. You can change between chords by entereing more lines or choosing different lines from history using the "up" arrow or grid button presses.<br>
 <br>
 You can also shape the timbre of each voice in the LiedMotor section of the parameters menu. There are a lot of parameters. MIDI mapping can be very helpful for managing them all. You can also modulate any of these parameters with LFOs, using the LFOs section of the parameters menu.<br>
 <br>
