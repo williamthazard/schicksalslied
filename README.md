@@ -57,4 +57,6 @@ Unlike krahenlied, schicksalsleid can also play w/syn's 4 voices. W/syn's "this"
 
 <b>A Note on Clock Divs</b>
 
-You'll notice that, in addition to the sections mentioned above, there is also a parameters menu section titled "Clock Divs." This allows you to choose the pace at which a given voice (engine, softcut, or crow) picks its notes from your line. For example, a bass player might not play notes as frequently as a saxophone player. Or they might play more! It's up to you.
+You'll notice that, in addition to the sections mentioned above, there is also a parameters menu section titled "Clock Divs." This allows you to choose the pace at which a given voice (engine, softcut, or crow) picks its notes from your line. For example, a bass player might not play notes as frequently as a saxophone player. Or they might play more! It's up to you.<br>
+<br>
+Note that for the clock div settings, higher numbers mean <i>longer</i>, not faster.
