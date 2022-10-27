@@ -412,81 +412,105 @@ function init()
   resonz_index_lfo = _lfos:add{min = 0, max = 1}
   resonz_amp_lfo = _lfos:add{min = 0, max = 100}
   resonz_pan_lfo = _lfos:add{min = -1, max = 1}
-  params:add_group('LFOs',555)
-  sinsin_index_lfo:add_params('sinsin_index_lfo', 'sinsin_index')
-  sinsin_attack_lfo:add_params('sinsin_attack_lfo', 'sinsin_attack')
-  sinsin_attack_lfo:set('action', function(scaled, raw) params:set('LiedMotor_sinsin_attack',scaled) end)
-  sinsin_release_lfo:add_params('sinsin_release_lfo', 'sinsin_release')
-  sinsin_release_lfo:set('action', function(scaled, raw) params:set('LiedMotor_sinsin_release',scaled) end)
-  sinsin_phase_lfo:add_params('sinsin_phase_lfo', 'sinsin_phase')
-  sinsin_phase_lfo:set('action', function(scaled, raw) params:set('LiedMotor_sinsin_phase',scaled) end)
+  wdel_feedback_lfo = _lfos:add{min = -5, max = 5}
+  wdel_filter_lfo = _lfos:add{min = -5, max = 5}
+  wsyn_lpg_speed_lfo = _lfos:add{min = -5, max = 5}
+  wsyn_lpg_symmetry_lfo = _lfos:add{min = -5, max = 5}
+  wsyn_fm_num_lfo = _lfos:add{min = -5, max = 5}
+  wsyn_fm_deno_lfo = _lfos:add{min = -5, max = 5}
+  wsyn_fm_index_lfo = _lfos:add{min = -5, max = 5}
+  wsyn_fm_envelope_lfo = _lfos:add{min = -5, max = 5}
+  params:add_group('LFOs',675)
+  sinsin_index_lfo:add_params('sinsin_index_lfo', 'sinsin index')
   sinsin_index_lfo:set('action', function(scaled, raw) params:set('LiedMotor_sinsin_index',scaled) end)
-  sinsin_modnum_lfo:add_params('sinsin_modnum_lfo', 'sinsin_modnum')
+  sinsin_attack_lfo:add_params('sinsin_attack_lfo', 'sinsin attack')
+  sinsin_attack_lfo:set('action', function(scaled, raw) params:set('LiedMotor_sinsin_attack',scaled) end)
+  sinsin_release_lfo:add_params('sinsin_release_lfo', 'sinsin release')
+  sinsin_release_lfo:set('action', function(scaled, raw) params:set('LiedMotor_sinsin_release',scaled) end)
+  sinsin_phase_lfo:add_params('sinsin_phase_lfo', 'sinsin phase')
+  sinsin_phase_lfo:set('action', function(scaled, raw) params:set('LiedMotor_sinsin_phase',scaled) end)
+  sinsin_modnum_lfo:add_params('sinsin_modnum_lfo', 'sinsin modnum')
   sinsin_modnum_lfo:set('action', function(scaled, raw) params:set('LiedMotor_sinsin_modnum',scaled) end)
-  sinsin_modeno_lfo:add_params('sinsin_modeno_lfo', 'sinsin_modeno')
+  sinsin_modeno_lfo:add_params('sinsin_modeno_lfo', 'sinsin modeno')
   sinsin_modeno_lfo:set('action', function(scaled, raw) params:set('LiedMotor_sinsin_modeno',scaled) end)
-  sinsin_amp_lfo:add_params('sinsin_amp_lfo', 'sinsin_amp')
+  sinsin_amp_lfo:add_params('sinsin_amp_lfo', 'sinsin amp')
   sinsin_amp_lfo:set('action', function(scaled, raw) params:set('LiedMotor_sinsin_amp',scaled) end)
-  sinsin_pan_lfo:add_params('sinsin_pan_lfo', 'sinsin_pan')
+  sinsin_pan_lfo:add_params('sinsin_pan_lfo', 'sinsin pan')
   sinsin_pan_lfo:set('action', function(scaled, raw) params:set('LiedMotor_sinsin_pan',scaled) end)
-  tritri_attack_lfo:add_params('tritri_attack_lfo', 'tritri_attack')
+  tritri_attack_lfo:add_params('tritri_attack_lfo', 'tritri attack')
   tritri_attack_lfo:set('action', function(scaled, raw) params:set('LiedMotor_tritri_attack',scaled) end)
-  tritri_release_lfo:add_params('tritri_release_lfo', 'tritri_release')
+  tritri_release_lfo:add_params('tritri_release_lfo', 'tritri release')
   tritri_release_lfo:set('action', function(scaled, raw) params:set('LiedMotor_tritri_release',scaled) end)
-  tritri_width_lfo:add_params('tritri_width_lfo', 'tritri_width')
+  tritri_width_lfo:add_params('tritri_width_lfo', 'tritri width')
   tritri_width_lfo:set('action', function(scaled, raw) params:set('LiedMotor_tritri_width',scaled) end)
-  tritri_modwidth_lfo:add_params('tritri_modwidth_lfo', 'tritri_modwidth')
+  tritri_modwidth_lfo:add_params('tritri_modwidth_lfo', 'tritri mod width')
   tritri_modwidth_lfo:set('action', function(scaled, raw) params:set('LiedMotor_tritri_modwidth',scaled) end)
-  tritri_phase_lfo:add_params('tritri_phase_lfo', 'tritri_phase')
+  tritri_phase_lfo:add_params('tritri_phase_lfo', 'tritri phase')
   tritri_phase_lfo:set('action', function(scaled, raw) params:set('LiedMotor_tritri_phase',scaled) end)
-  tritri_modphase_lfo:add_params('tritri_modphase_lfo', 'tritri_modphase')
+  tritri_modphase_lfo:add_params('tritri_modphase_lfo', 'tritri mod phase')
   tritri_modphase_lfo:set('action', function(scaled, raw) params:set('LiedMotor_tritri_modphase',scaled) end)
-  tritri_index_lfo:add_params('tritri_index_lfo', 'tritri_index')
+  tritri_index_lfo:add_params('tritri_index_lfo', 'tritri index')
   tritri_index_lfo:set('action', function(scaled, raw) params:set('LiedMotor_tritri_index',scaled) end)
-  tritri_modnum_lfo:add_params('tritri_modnum_lfo', 'tritri_modnum')
+  tritri_modnum_lfo:add_params('tritri_modnum_lfo', 'tritri modnum')
   tritri_modnum_lfo:set('action', function(scaled, raw) params:set('LiedMotor_tritri_modnum',scaled) end)
-  tritri_modeno_lfo:add_params('tritri_modeno_lfo', 'tritri_modeno')
+  tritri_modeno_lfo:add_params('tritri_modeno_lfo', 'tritri modeno')
   tritri_modeno_lfo:set('action', function(scaled, raw) params:set('LiedMotor_tritri_modeno',scaled) end)
-  tritri_amp_lfo:add_params('tritri_amp_lfo', 'tritri_amp')
+  tritri_amp_lfo:add_params('tritri_amp_lfo', 'tritri amp')
   tritri_amp_lfo:set('action', function(scaled, raw) params:set('LiedMotor_tritri_amp',scaled) end)
-  tritri_pan_lfo:add_params('tritri_pan_lfo', 'tritri_pan')
+  tritri_pan_lfo:add_params('tritri_pan_lfo', 'tritri pan')
   tritri_pan_lfo:set('action', function(scaled, raw) params:set('LiedMotor_tritri_pan',scaled) end)
-  ringer_index_lfo:add_params('ringer_index_lfo', 'ringer_index')
+  ringer_index_lfo:add_params('ringer_index_lfo', 'ringer index')
   ringer_index_lfo:set('action', function(scaled, raw) params:set('LiedMotor_ringer_index',scaled) end)
-  ringer_amp_lfo:add_params('ringer_amp_lfo', 'ringer_amp')
+  ringer_amp_lfo:add_params('ringer_amp_lfo', 'ringer amp')
   ringer_amp_lfo:set('action', function(scaled, raw) params:set('LiedMotor_ringer_amp',scaled) end)
-  ringer_pan_lfo:add_params('ringer_pan_lfo', 'ringer_pan')
+  ringer_pan_lfo:add_params('ringer_pan_lfo', 'ringer pan')
   ringer_pan_lfo:set('action', function(scaled, raw) params:set('LiedMotor_ringer_pan',scaled) end)
-  trisin_attack_lfo:add_params('trisin_attack_lfo', 'trisin_attack')
+  trisin_attack_lfo:add_params('trisin_attack_lfo', 'trisin attack')
   trisin_attack_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_attack',scaled) end)
-  trisin_release_lfo:add_params('trisin_release_lfo', 'trisin_release')
+  trisin_release_lfo:add_params('trisin_release_lfo', 'trisin release')
   trisin_release_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_release',scaled) end)
-  trisin_phase_lfo:add_params('trisin_phase_lfo', 'trisin_phase')
+  trisin_phase_lfo:add_params('trisin_phase_lfo', 'trisin phase')
   trisin_phase_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_phase',scaled) end)
-  trisin_index_lfo:add_params('trisin_index_lfo', 'trisin_index')
+  trisin_index_lfo:add_params('trisin_index_lfo', 'trisin index')
   trisin_index_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_index',scaled) end)
-  trisin_modnum_lfo:add_params('trisin_modnum_lfo', 'trisin_modnum')
+  trisin_modnum_lfo:add_params('trisin_modnum_lfo', 'trisin modnum')
   trisin_modnum_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_modnum',scaled) end)
-  trisin_modeno_lfo:add_params('trisin_modeno_lfo', 'trisin_modeno')
+  trisin_modeno_lfo:add_params('trisin_modeno_lfo', 'trisin modeno')
   trisin_modeno_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_modeno',scaled) end)
-  trisin_amp_lfo:add_params('trisin_amp_lfo', 'trisin_amp')
+  trisin_amp_lfo:add_params('trisin_amp_lfo', 'trisin amp')
   trisin_amp_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_amp',scaled) end)
-  trisin_pan_lfo:add_params('trisin_pan_lfo', 'trisin_pan')
+  trisin_pan_lfo:add_params('trisin_pan_lfo', 'trisin pan')
   trisin_pan_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_pan',scaled) end)
-  karplu_index_lfo:add_params('karplu_index_lfo', 'karplu_index')
+  karplu_index_lfo:add_params('karplu_index_lfo', 'karplu index')
   karplu_index_lfo:set('action', function(scaled, raw) params:set('LiedMotor_karplu_index',scaled) end)
-  karplu_coef_lfo:add_params('karplu_coef_lfo', 'karplu_coef')
+  karplu_coef_lfo:add_params('karplu_coef_lfo', 'karplu coef')
   karplu_coef_lfo:set('action', function(scaled, raw) params:set('LiedMotor_karplu_coef',scaled) end)
-  karplu_amp_lfo:add_params('karplu_amp_lfo', 'karplu_amp')
+  karplu_amp_lfo:add_params('karplu_amp_lfo', 'karplu amp')
   karplu_amp_lfo:set('action', function(scaled, raw) params:set('LiedMotor_karplu_amp',scaled) end)
-  karplu_pan_lfo:add_params('karplu_pan_lfo', 'karplu_pan')
+  karplu_pan_lfo:add_params('karplu_pan_lfo', 'karplu pan')
   karplu_pan_lfo:set('action', function(scaled, raw) params:set('LiedMotor_karplu_pan',scaled) end)
-  resonz_index_lfo:add_params('resonz_index_lfo', 'resonz_index')
+  resonz_index_lfo:add_params('resonz_index_lfo', 'resonz index')
   resonz_index_lfo:set('action', function(scaled, raw) params:set('LiedMotor_resonz_index',scaled) end)
-  resonz_amp_lfo:add_params('resonz_amp_lfo', 'resonz_amp')
+  resonz_amp_lfo:add_params('resonz_amp_lfo', 'resonz amp')
   resonz_amp_lfo:set('action', function(scaled, raw) params:set('LiedMotor_resonz_amp',scaled) end)
-  resonz_pan_lfo:add_params('resonz_pan_lfo', 'resonz_pan')
+  resonz_pan_lfo:add_params('resonz_pan_lfo', 'resonz pan')
   resonz_pan_lfo:set('action', function(scaled, raw) params:set('LiedMotor_resonz_pan',scaled) end)
+  wdel_feedback_lfo:add_params('wdel_feedback_lfo', 'w/del feedback')
+  wdel_feedback_lfo:set('action', function(scaled, raw) params:set('w/del_feedback',scaled) end)
+  wdel_filter_lfo:add_params('wdel_filter_lfo', 'w/del filter')
+  wdel_filter_lfo:set('action', function(scaled, raw) params:set('w/del filter',scaled) end)
+  wsyn_lpg_speed_lfo:add_params('wsyn_lpg_speed_lfo', 'w/syn lpg speed')
+  wsyn_lpg_speed_lfo:set('action', function(scaled, raw) params:set('w/syn lpg speed',scaled) end)
+  wsyn_lpg_symmetry_lfo:add_params('wsyn_lpg_symmetry_lfo', 'w/syn lpg symmetry')
+  wsyn_lpg_symmetry_lfo:set('action', function(scaled, raw) params:set('w/syn lpg symmetry',scaled) end)
+  wsyn_fm_num_lfo:add_params('wsyn_fm_num_lfo', 'w/syn fm num')
+  wsyn_fm_num_lfo:set('action', function(scaled, raw) params:set('w/syn fm num',scaled) end)
+  wsyn_fm_deno_lfo:add_params('wsyn_fm_deno_lfo', 'w/syn fm deno')
+  wsyn_fm_deno_lfo:set('action', function(scaled, raw) params:set('w/syn fm deno',scaled) end)
+  wsyn_fm_index_lfo:add_params('wsyn_fm_index_lfo', 'w/syn fm index')
+  wsyn_fm_index_lfo:set('action', function(scaled, raw) params:set('w/syn fm index',scaled) end)
+  wsyn_fm_envelope_lfo:add_params('wsyn_fm_envelop_lfo', 'w/syn fm envelope')
+  wsyn_fm_envelope_lfo:set('action', function(scaled, raw) params:set('w/syn fm envelope',scaled) end)
   screen.aa(0)
   params:add_separator('clock divs','clock divs')
   params:add_control('sinsin','sinsin',controlspec.new(1,64,'lin',1,1,''))
@@ -511,12 +535,34 @@ function init()
   params:set_action('crow outputs 1 & 2',function(x) firstcrowdiv=x end)
   params:add_control('crow outputs 3 & 4','crow outputs 3 & 4',controlspec.new(1,64,'lin',1,1,''))
   params:set_action('crow outputs 3 & 4',function(x) secondcrowdiv=x end)
-  params:add_control('just friends','just friends',controlspec.new(1,64,'lin',1,1,''))
-  params:set_action('just friends',function(x) jfdiv=x end)
+  params:add_control('just friends voice 1','just friends voice 1',controlspec.new(1,64,'lin',1,1,''))
+  params:set_action('just friends voice 1',function(x) firstjfdiv=x end)
+  params:add_control('just friends voice 2','just friends voice 2',controlspec.new(1,64,'lin',1,1,''))
+  params:set_action('just friends voice 2',function(x) secondjfdiv=x end)
+  params:add_control('just friends voice 3','just friends voice 3',controlspec.new(1,64,'lin',1,1,''))
+  params:set_action('just friends voice 3',function(x) thirdjfdiv=x end)
+  params:add_control('just friends voice 4','just friends voice 4',controlspec.new(1,64,'lin',1,1,''))
+  params:set_action('just friends voice 4',function(x) fourthjfdiv=x end)
+  params:add_control('just friends voice 5','just friends voice 5',controlspec.new(1,64,'lin',1,1,''))
+  params:set_action('just friends voice 5',function(x) fifthjfdiv=x end)
+  params:add_control('just friends voice 6','just friends voice 6',controlspec.new(1,64,'lin',1,1,''))
+  params:set_action('just friends voice 6',function(x) sixthjfdiv=x end)
+  params:add_control('just friends run','just friends run',controlspec.new(1,64,'lin',1,1,''))
+  params:set_action('just friends run',function(x) runjfdiv=x end)
+  params:add_control('just friends quantize','just friends quantize',controlspec.new(1,64,'lin',1,1,''))
+  params:set_action('just friends quantize',function(x) quantjfdiv=x end)
   params:add_control('w/tape','w/tape',controlspec.new(1,64,'lin',1,1,''))
   params:set_action('w/tape',function(x) wtapediv=x end)
-  params:add_control('w/syn','w/syn',controlspec.new(1,64,'lin',1,1,''))
-  params:set_action('w/syn',function(x) wsyndiv=x end)
+  params:add_control('w/del','w/del',controlspec.new(1,64,'lin',1,1,''))
+  params:set_action('w/del',function(x) wdeldiv=x end)
+  params:add_control('w/syn voice 1','w/syn voice 1',controlspec.new(1,64,'lin',1,1,''))
+  params:set_action('w/syn voice 1',function(x) firstwsyndiv=x end)
+  params:add_control('w/syn voice 2','w/syn voice 2',controlspec.new(1,64,'lin',1,1,''))
+  params:set_action('w/syn voice 2',function(x) secondwsyndiv=x end)
+  params:add_control('w/syn voice 3','w/syn voice 3',controlspec.new(1,64,'lin',1,1,''))
+  params:set_action('w/syn voice 3',function(x) thirdwsyndiv=x end)
+  params:add_control('w/syn voice 4','w/syn voice 4',controlspec.new(1,64,'lin',1,1,''))
+  params:set_action('w/syn voice 4',function(x) fourthwsyndiv=x end)
   params:add_separator('softcut voice levels','softcut voice levels')
   params:add_control('voice 1','voice 1',controlspec.new(0,1,'lin',0.01,1,''))
   params:set_action('voice 1',function(x) softcut.level(1,x) softcut.level(2,x) end)
@@ -524,19 +570,23 @@ function init()
   params:set_action('voice 2',function(x) softcut.level(3,x) softcut.level(4,x) end)
   params:add_control('voice 3','voice 3',controlspec.new(0,1,'lin',0.01,1,''))
   params:set_action('voice 3',function(x) softcut.level(5,x) softcut.level(6,x) end)
-  params:add_separator('w/syn settings','w/syn settings')
-  params:add_control('lpg speed','lpg speed',controlspec.new(-5,5,'lin',0.01,-3,''))
-  params:set_action('lpg speed',function(x) crow.ii.wsyn.lpg_time(x) end)
-  params:add_control('lpg symmetry','lpg symmetry',controlspec.new(-5,5,'lin',0.01,-1,''))
-  params:set_action('lpg symmetry',function(x) crow.ii.wsyn.lpg_symmetry(x) end)
-  params:add_control('fm num','fm num',controlspec.new(-5,5,'lin',0.01,1,''))
-  params:set_action('fm num',function(x) crow.ii.wsyn.fm_ratio(x,params:get('fm deno')) end)
-  params:add_control('fm deno','fm deno',controlspec.new(-5,5,'lin',0.01,1,''))
-  params:set_action('fm deno',function(x) crow.ii.wsyn.fm_ratio(params:get('fm num'),x) end)
-  params:add_control('fm index','fm index',controlspec.new(-5,5,'lin',0.01,0.1,''))
-  params:set_action('fm index',function(x) crow.ii.wsyn.fm_index(x) end)
-  params:add_control('fm envelope','fm envelope',controlspec.new(-5,5,'lin',0.01,-0.1,''))
-  params:set_action('fm envelope',function(x) crow.ii.wsyn.fm_env(x) end)
+  params:add_separator('w/ settings','w/ settings')
+  params:add_control('w/del feedback','w/del feedback',controlspec.new(-5,5,'lin',0.01,4.8,''))
+  params:set_action('w/del feedback',function(x) crow.ii.wdel.feedback(x) end)
+  params:add_control('w/del filter cutoff','w/del filter cutoff',controlspec.new(-5,5,'lin',0.01,4.8,''))
+  params:set_action('w/del filter cutoff',function(x) crow.ii.wdel.filter(x) end)
+  params:add_control('w/syn lpg speed','w/syn lpg speed',controlspec.new(-5,5,'lin',0.01,-3,''))
+  params:set_action('w/syn lpg speed',function(x) crow.ii.wsyn.lpg_time(x) end)
+  params:add_control('w/syn lpg symmetry','w/syn lpg symmetry',controlspec.new(-5,5,'lin',0.01,-1,''))
+  params:set_action('w/syn lpg symmetry',function(x) crow.ii.wsyn.lpg_symmetry(x) end)
+  params:add_control('w/syn fm num','w/syn fm num',controlspec.new(-5,5,'lin',0.01,1,''))
+  params:set_action('w/syn fm num',function(x) crow.ii.wsyn.fm_ratio(x,params:get('w/syn fm deno')) end)
+  params:add_control('w/syn fm deno','w/syn fm deno',controlspec.new(-5,5,'lin',0.01,1,''))
+  params:set_action('w/syn fm deno',function(x) crow.ii.wsyn.fm_ratio(params:get('w/syn fm num'),x) end)
+  params:add_control('w/syn fm index','w/syn fm index',controlspec.new(-5,5,'lin',0.01,0.1,''))
+  params:set_action('w/syn fm index',function(x) crow.ii.wsyn.fm_index(x) end)
+  params:add_control('w/syn fm envelope','w/syn fm envelope',controlspec.new(-5,5,'lin',0.01,-0.1,''))
+  params:set_action('w/syn fm envelope',function(x) crow.ii.wsyn.fm_env(x) end)
   params:bang()
   params:add_separator('load files','load files')
   params:add_file('audio file','audio file')
@@ -586,6 +636,7 @@ function init()
   clock.run(withsynb_event)
   clock.run(withsync_event)
   clock.run(withsynd_event)
+  clock.run(wdel_event)
   clock.run(wcheck)
   clock.run(grid_redraw_clock)
   crow.input[1].mode('clock')
@@ -595,6 +646,8 @@ function init()
   crow.ii.wtape.timestamp(1)
   crow.ii.wtape.freq(0)
   crow.ii.wtape.play(0)
+  crow.ii.wdel.mod_rate(0)
+  crow.ii.wdel.mod_amount(0)
   crow.ii.wsyn.ar_mode(1)
   crow.ii.wsyn.voices(4) 
   crow.ii.wsyn.patch(1,1)
@@ -697,7 +750,7 @@ end
 
 function jfa_event()
   while true do
-    clock.sync((c:step(77)()/c:step(78)())*jfdiv)
+    clock.sync((c:step(77)()/c:step(78)())*firstjfdiv)
     if walking then
     crow.ii.jf.play_voice(1, c:step(79)()/12, j:step(80)())
     end
@@ -706,7 +759,7 @@ end
 
 function jfb_event()
   while true do
-    clock.sync((c:step(81)()/c:step(82)())*jfdiv)
+    clock.sync((c:step(81)()/c:step(82)())*secondjfdiv)
     if walking then
     crow.ii.jf.play_voice(2, c:step(83)()/12, j:step(84)())
     end
@@ -715,7 +768,7 @@ end
 
 function jfc_event()
   while true do
-    clock.sync((c:step(85)()/c:step(86)())*jfdiv)
+    clock.sync((c:step(85)()/c:step(86)())*thirdjfdiv)
     if walking then
     crow.ii.jf.play_voice(3, c:step(87)()/12, j:step(88)())
     end
@@ -724,7 +777,7 @@ end
 
 function jfd_event()
   while true do
-    clock.sync((c:step(89)()/c:step(90)())*jfdiv)
+    clock.sync((c:step(89)()/c:step(90)())*fourthjfdiv)
     if walking then
     crow.ii.jf.play_voice(4, c:step(91)()/12, j:step(92)())
     end
@@ -733,7 +786,7 @@ end
 
 function jfe_event()
   while true do
-    clock.sync((c:step(93)()/c:step(94)())*jfdiv)
+    clock.sync((c:step(93)()/c:step(94)())*fifthjfdiv)
     if walking then
     crow.ii.jf.play_voice(5, c:step(95)()/12, j:step(96)())
     end
@@ -742,7 +795,7 @@ end
 
 function jff_event()
   while true do
-    clock.sync((c:step(97)()/c:step(98)())*jfdiv)
+    clock.sync((c:step(97)()/c:step(98)())*sixthjfdiv)
     if walking then
     crow.ii.jf.play_voice(6, c:step(99)()/12, j:step(100)())
     end
@@ -751,7 +804,7 @@ end
 
 function run_event()
   while true do
-    clock.sync((c:step(101)()/c:step(102)())*jfdiv)
+    clock.sync((c:step(101)()/c:step(102)())*runjfdiv)
     if walking then
     crow.ii.jf.run(j:step(103)())
     end
@@ -760,7 +813,7 @@ end
 
 function quantize_event()
   while true do
-    clock.sync((c:step(104)()/c:step(105)())*jfdiv)
+    clock.sync((c:step(104)()/c:step(105)())*quantjfdiv)
     if walking then
     crow.ii.jf.quantize(c:step(106)())
     end
@@ -852,7 +905,7 @@ end
 
 function withsyna_event()
   while true do
-    clock.sync((c:step(175)()/c:step(176)())*wsyndiv)
+    clock.sync((c:step(175)()/c:step(176)())*firstwsyndiv)
     if walking then
     crow.ii.wsyn.play_voice(1, c:step(177)()/12, j:step(178)())
     end
@@ -861,7 +914,7 @@ end
 
 function withsynb_event()
   while true do
-    clock.sync((c:step(179)()/c:step(180)())*wsyndiv)
+    clock.sync((c:step(179)()/c:step(180)())*secondwsyndiv)
     if walking then
     crow.ii.wsyn.play_voice(1, c:step(181)()/12, j:step(182)())
     end
@@ -870,7 +923,7 @@ end
 
 function withsync_event()
   while true do
-    clock.sync((c:step(183)()/c:step(184)())*wsyndiv)
+    clock.sync((c:step(183)()/c:step(184)())*thirdwsyndiv)
     if walking then
     crow.ii.wsyn.play_voice(1, c:step(185)()/12, j:step(186)())
     end
@@ -879,9 +932,20 @@ end
 
 function withsynd_event()
   while true do
-    clock.sync((c:step(187)()/c:step(188)())*wsyndiv)
+    clock.sync((c:step(187)()/c:step(188)())*fourthwsyndiv)
     if walking then
     crow.ii.wsyn.play_voice(1, c:step(189)()/12, j:step(190)())
+    end
+  end
+end
+
+function wdel_event()
+  while true do
+    clock.sync((c:step(191)()/c:step(192)())*wdeldiv)
+    if walking then
+      crow.ii.wdel.time(0)
+      crow.ii.wdel.freq(c:step(193)()/12)
+      crow.ii.wdel.pluck(j:step(194)())
     end
   end
 end
