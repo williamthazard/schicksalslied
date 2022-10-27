@@ -916,7 +916,7 @@ function withsynb_event()
   while true do
     clock.sync((c:step(179)()/c:step(180)())*secondwsyndiv)
     if walking then
-    crow.ii.wsyn.play_voice(1, c:step(181)()/12, j:step(182)())
+    crow.ii.wsyn.play_voice(2, c:step(181)()/12, j:step(182)())
     end
   end
 end
@@ -925,7 +925,7 @@ function withsync_event()
   while true do
     clock.sync((c:step(183)()/c:step(184)())*thirdwsyndiv)
     if walking then
-    crow.ii.wsyn.play_voice(1, c:step(185)()/12, j:step(186)())
+    crow.ii.wsyn.play_voice(3, c:step(185)()/12, j:step(186)())
     end
   end
 end
@@ -934,7 +934,7 @@ function withsynd_event()
   while true do
     clock.sync((c:step(187)()/c:step(188)())*fourthwsyndiv)
     if walking then
-    crow.ii.wsyn.play_voice(1, c:step(189)()/12, j:step(190)())
+    crow.ii.wsyn.play_voice(4, c:step(189)()/12, j:step(190)())
     end
   end
 end
