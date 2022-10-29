@@ -22,10 +22,10 @@ _lfos = require 'lfo'
 
 selectedfile = _path.dust.."audio/hermit_leaves.wav"
 
-local my_string = " "
+my_string = " "
 history = {}
-local history_index = nil
-local new_line = false
+history_index = nil
+new_line = false
 
 running = false 
 going = false
@@ -1003,7 +1003,7 @@ function redraw()
   screen.move(5,59)
   screen.text("> " .. my_string)
   if #history > 0 then
-    history_index = #history -- this is always the last entered command
+    local history_index = #history -- this is always the last entered command
     screen.move(5, 45)
     screen.text(history[history_index])
     if history_index >= 2 then screen.move(5, 35) screen.text(history[history_index - 1]) end -- command before last
