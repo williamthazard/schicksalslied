@@ -833,7 +833,7 @@ function rev_event()
   while true do
     clock.sync((c:step(111)()/c:step(112)())*wtapediv)
     if walking then
-    crow.ii.wtape.reverse()
+    crow.ii.wtape.reverse(1)
     end
   end
 end
@@ -842,9 +842,9 @@ function looper()
   while true do
     clock.sync((c:step(113)()/c:step(114)())*wtapediv)
     if walking then
-    crow.ii.wtape.loop_start()
+    crow.ii.wtape.loop_start(1)
     clock.sync((c:step(115)()/c:step(116)())*wtapediv)
-    crow.ii.wtape.loop_end()
+    crow.ii.wtape.loop_end(1)
       if c:step(117)() < 17 then
         for i = 1,j:step(118)() do 
           clock.sync((c:step(119)()/c:step(120)())*wtapediv)
