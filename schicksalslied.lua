@@ -20,7 +20,12 @@ sequins = require "sequins"
 fileselect = require 'fileselect'
 _lfos = require 'lfo'
 
-selectedfile = _path.dust.."audio/hermit_leaves.wav"
+selectedfile = {}
+filelength = {}
+
+for i=1,3 do
+  selectedfile[i] = _path.dust.."audio/hermit_leaves.wav"
+end
 
 my_string = " "
 history = {}
@@ -148,8 +153,8 @@ function softone()
       local firstfade = 1/c:step(21)()
       softcut.fade_time(1,firstfade)
       softcut.fade_time(2,firstfade)
-      local ch,length,rate = audio.file_info(selectedfile)
-      if length/rate > 300 then length = 300
+      local ch,length,rate = audio.file_info(selectedfile[1])
+      if length/rate > 100 then length = 100
         else length = length/rate
       end
       local firstposition = util.linlin(49,80,0,length-0.5,s:step(22)())
@@ -212,16 +217,16 @@ function softtwo()
       local secondfade = 1/c:step(36)()
       softcut.fade_time(3,secondfade)
       softcut.fade_time(4,secondfade)
-      local ch,length,rate = audio.file_info(selectedfile)
-      if length/rate > 300 then length = 300
+      local ch,length,rate = audio.file_info(selectedfile[2])
+      if length/rate > 100 then length = 100
         else length = length/rate
       end
-      local secondposition = util.linlin(49,80,0,length-0.5,s:step(37)())
+      local secondposition = util.linlin(49,80,101,101+(length-0.5),s:step(37)())
       softcut.position(3,secondposition)
       softcut.position(4,secondposition)
-      local secondend = util.linlin(49,80,0,length,s:step(38)())
+      local secondend = util.linlin(49,80,101,101+length,s:step(38)())
       local realend = secondposition + secondend
-      if realend > length then realend = length
+      if realend > (length+100) then realend = (length+100)
         else realend = realend
       end
       softcut.loop_start(3,secondposition)
@@ -274,16 +279,16 @@ function softthree()
       local thirdfade = 1/c:step(51)()
       softcut.fade_time(5,thirdfade)
       softcut.fade_time(6,thirdfade)
-      local ch,length,rate = audio.file_info(selectedfile)
-      if length/rate > 300 then length = 300
+      local ch,length,rate = audio.file_info(selectedfile[3])
+      if length/rate > 100 then length = 100
         else length = length/rate
       end
-      local thirdposition = util.linlin(49,80,0,length-0.5,s:step(52)())
+      local thirdposition = util.linlin(49,80,201,200+(length-0.5),s:step(52)())
       softcut.position(5,thirdposition)
       softcut.position(6,thirdposition)
-      local thirdend = util.linlin(49,80,0,length,s:step(53)())
+      local thirdend = util.linlin(49,80,201,200+length,s:step(53)())
       local realend = thirdposition + thirdend
-      if realend > length then realend = length
+      if realend > (length+200) then realend = length+200
         else realend = realend
       end
       softcut.loop_start(5,thirdposition)
@@ -352,7 +357,7 @@ function key(n,z)
     else print('not running')
     end
   elseif n==1 and z==1 then
-    -- K1 + K3 toggles crow
+    -- K1 toggles crow
     walking = not walking
     if walking then
       print('walking')
@@ -513,55 +518,55 @@ function init()
   wsyn_fm_envelope_lfo:set('action', function(scaled, raw) params:set('w/syn fm envelope',scaled) end)
   screen.aa(0)
   params:add_separator('clock divs','clock divs')
-  params:add_control('sinsin','sinsin',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('sinsin','sinsin',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('sinsin',function(x) sinsindiv=x end)
-  params:add_control('tritri','tritri',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('tritri','tritri',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('tritri',function(x) tritridiv=x end)
-  params:add_control('ringer','ringer',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('ringer','ringer',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('ringer',function(x) ringerdiv=x end)
-  params:add_control('trisin','trisin',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('trisin','trisin',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('trisin',function(x) trisindiv=x end)
-  params:add_control('karplu','karplu',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('karplu','karplu',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('karplu',function(x) karpludiv=x end)
-  params:add_control('resonz','resonz',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('resonz','resonz',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('resonz',function(x) resonzdiv=x end)
-  params:add_control('softcut voice 1','softcut voice 1',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('softcut voice 1','softcut voice 1',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('softcut voice 1',function(x) softonediv=x end)
-  params:add_control('softcut voice 2','softcut voice 2',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('softcut voice 2','softcut voice 2',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('softcut voice 2',function(x) softtwodiv=x end)
-  params:add_control('softcut voice 3','softcut voice 3',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('softcut voice 3','softcut voice 3',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('softcut voice 3',function(x) softthreediv=x end)
-  params:add_control('crow outputs 1 & 2','crow outputs 1 & 2',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('crow outputs 1 & 2','crow outputs 1 & 2',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('crow outputs 1 & 2',function(x) firstcrowdiv=x end)
-  params:add_control('crow outputs 3 & 4','crow outputs 3 & 4',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('crow outputs 3 & 4','crow outputs 3 & 4',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('crow outputs 3 & 4',function(x) secondcrowdiv=x end)
-  params:add_control('just friends voice 1','just friends voice 1',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('just friends voice 1','just friends voice 1',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('just friends voice 1',function(x) firstjfdiv=x end)
-  params:add_control('just friends voice 2','just friends voice 2',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('just friends voice 2','just friends voice 2',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('just friends voice 2',function(x) secondjfdiv=x end)
-  params:add_control('just friends voice 3','just friends voice 3',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('just friends voice 3','just friends voice 3',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('just friends voice 3',function(x) thirdjfdiv=x end)
-  params:add_control('just friends voice 4','just friends voice 4',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('just friends voice 4','just friends voice 4',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('just friends voice 4',function(x) fourthjfdiv=x end)
-  params:add_control('just friends voice 5','just friends voice 5',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('just friends voice 5','just friends voice 5',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('just friends voice 5',function(x) fifthjfdiv=x end)
-  params:add_control('just friends voice 6','just friends voice 6',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('just friends voice 6','just friends voice 6',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('just friends voice 6',function(x) sixthjfdiv=x end)
-  params:add_control('just friends run','just friends run',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('just friends run','just friends run',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('just friends run',function(x) runjfdiv=x end)
-  params:add_control('just friends quantize','just friends quantize',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('just friends quantize','just friends quantize',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('just friends quantize',function(x) quantjfdiv=x end)
-  params:add_control('w/tape','w/tape',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('w/tape','w/tape',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('w/tape',function(x) wtapediv=x end)
-  params:add_control('w/del','w/del',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('w/del','w/del',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('w/del',function(x) wdeldiv=x end)
-  params:add_control('w/syn voice 1','w/syn voice 1',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('w/syn voice 1','w/syn voice 1',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('w/syn voice 1',function(x) firstwsyndiv=x end)
-  params:add_control('w/syn voice 2','w/syn voice 2',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('w/syn voice 2','w/syn voice 2',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('w/syn voice 2',function(x) secondwsyndiv=x end)
-  params:add_control('w/syn voice 3','w/syn voice 3',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('w/syn voice 3','w/syn voice 3',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('w/syn voice 3',function(x) thirdwsyndiv=x end)
-  params:add_control('w/syn voice 4','w/syn voice 4',controlspec.new(1,64,'lin',1,1,''))
+  params:add_control('w/syn voice 4','w/syn voice 4',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('w/syn voice 4',function(x) fourthwsyndiv=x end)
   params:add_separator('softcut voice levels','softcut voice levels')
   params:add_control('voice 1','voice 1',controlspec.new(0,1,'lin',0.01,1,''))
@@ -589,8 +594,10 @@ function init()
   params:set_action('w/syn fm envelope',function(x) crow.ii.wsyn.fm_env(x) end)
   params:bang()
   params:add_separator('load files','load files')
-  params:add_file('audio file','audio file')
-  params:set_action('audio file', function(file) selectedfile=file end)
+  for i=1,3 do
+    params:add_file('audio file '..i,'audio file '..i)
+    params:set_action('audio file '..i, function(file) selectedfile[i]=file end)
+  end
   params:add_file('text file','text file')
   params:set_action('text file',function(file) io.input(file) Split(file) grid_redraw() end)
   grid_dirty = false
@@ -697,17 +704,28 @@ s = sequins(processString(my_string))
 c = sequins(crowString(my_string))
 j = sequins(jfscaling(my_string))
   
+function getlength(x)
+  local ch,length,rate = audio.file_info(x)
+  local seclength = length/rate
+  return seclength
+end
+
 function set()
-    s:settable(processString(my_string))
-    c:settable(crowString(my_string))
-    j:settable(jfscaling(my_string))
-    local ch,length,rate = audio.file_info(selectedfile)
-    local seclength = length/rate
-    if seclength > 300 then seclength = seclength-300
-      else seclength = seclength
+  s:settable(processString(my_string))
+  c:settable(crowString(my_string))
+  j:settable(jfscaling(my_string))
+  local filelength = {}
+  local starter = {}
+  local scstarter = {}
+  for i=1,3 do
+    filelength[i] = getlength(selectedfile[i])
+    starter[i] = util.linlin(49,80,0,filelength[i],s:step(63+i)())
+    if i > 1 then
+      scstarter[i] = 100*(i-1)
+      else scstarter[i] = 0
     end
-    starter = util.linlin(49,80,0,seclength,s:step(64)())
-    softcut.buffer_read_stereo(selectedfile, starter, 0, -1, 0, 1)
+    softcut.buffer_read_stereo(selectedfile[i], starter[i], scstarter[i], 100*i, 0, 1)
+  end
 end
 
 function wcheck()
@@ -724,12 +742,12 @@ function notes_event()
   while true do
     clock.sync((c:step(65)()/c:step(66)())*firstcrowdiv)
     if walking then
-    crow.output[1].volts = c:step(67)()/12
-    crow.output[1].slew = c:step(68)()/300
-    crow.output[2].action = "{to(5,dyn{attack=1}), to(0,dyn{release=1})}"
-    crow.output[2].dyn.attack = c:step(69)()/40
-    crow.output[2].dyn.release = c:step(70)()/40
-    crow.output[2]()
+      crow.output[1].volts = c:step(67)()/12
+      crow.output[1].slew = c:step(68)()/300
+      crow.output[2].action = "{to(5,dyn{attack=1}), to(0,dyn{release=1})}"
+      crow.output[2].dyn.attack = c:step(69)()/40
+      crow.output[2].dyn.release = c:step(70)()/40
+      crow.output[2]()
     end
   end
 end
@@ -738,12 +756,12 @@ function other_event()
   while true do
     clock.sync((c:step(71)()/c:step(72)())*secondcrowdiv)
     if walking then
-    crow.output[3].volts = c:step(73)()/12
-    crow.output[3].slew = c:step(74)()/300
-    crow.output[4].action = "{to(5,dyn{attack=1}), to(0,dyn{release=1})}"
-    crow.output[4].dyn.attack = c:step(75)()/40
-    crow.output[4].dyn.release = c:step(76)()/40
-    crow.output[4]()
+      crow.output[3].volts = c:step(73)()/12
+      crow.output[3].slew = c:step(74)()/300
+      crow.output[4].action = "{to(5,dyn{attack=1}), to(0,dyn{release=1})}"
+      crow.output[4].dyn.attack = c:step(75)()/40
+      crow.output[4].dyn.release = c:step(76)()/40
+      crow.output[4]()
     end
   end
 end
