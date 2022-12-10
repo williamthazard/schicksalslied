@@ -919,7 +919,7 @@ function looper()
           crow.ii.wtape.seek((c:step(173)()*300)-(c:step(174)()*300))
         end
       end
-      end
+    end
   end
 end
 
