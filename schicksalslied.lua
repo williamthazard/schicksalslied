@@ -283,10 +283,10 @@ function softthree()
       if length/rate > 100 then length = 100
         else length = length/rate
       end
-      local thirdposition = util.linlin(49,80,201,200+(length-0.5),s:step(52)())
+      local thirdposition = util.linlin(49,80,202,202+(length-0.5),s:step(52)())
       softcut.position(5,thirdposition)
       softcut.position(6,thirdposition)
-      local thirdend = util.linlin(49,80,201,200+length,s:step(53)())
+      local thirdend = util.linlin(49,80,202,202+length,s:step(53)())
       local realend = thirdposition + thirdend
       if realend > (length+200) then realend = length+200
         else realend = realend
@@ -724,7 +724,7 @@ function set()
       scstarter[i] = 100*(i-1)
       else scstarter[i] = 0
     end
-    softcut.buffer_read_stereo(selectedfile[i], starter[i], scstarter[i], 100*i, 0, 1)
+    softcut.buffer_read_stereo(selectedfile[i], starter[i], scstarter[i], 100, 0, 1)
   end
 end
 
