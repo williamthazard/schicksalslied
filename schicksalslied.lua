@@ -10,6 +10,8 @@
 ---to add lines to your poem
 ---
 ---use grid to recall history
+---
+---version 1.0.4
 
 local extensions = "/home/we/.local/share/SuperCollider/Extensions"
 engine.name = util.file_exists(extensions .. "/FormantTriPTR/FormantTriPTR.sc") and 'LiedMotor' or nil
