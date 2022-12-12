@@ -11,7 +11,7 @@
 ---
 ---use grid to recall history
 ---
----version 1.0.4
+---version 1.0.5
 
 local extensions = "/home/we/.local/share/SuperCollider/Extensions"
 engine.name = util.file_exists(extensions .. "/FormantTriPTR/FormantTriPTR.sc") and 'LiedMotor' or nil
@@ -76,7 +76,9 @@ function Split()
   end
 end
 
-function step()
+step = {}
+
+step[1] = function()
     while true do
         clock.sync((s:step(2)()/s:step(3)())*sinsindiv)
         if running then
@@ -87,7 +89,7 @@ function step()
     end
 end
 
-function steptwo()
+step[2] = function()
     while true do
         clock.sync((s:step(4)()/s:step(5)())*tritridiv)
         if running then
@@ -98,7 +100,7 @@ function steptwo()
     end
 end
 
-function stepthree()
+step[3] = function()
     while true do
         clock.sync((s:step(7)()/s:step(8)())*ringerdiv)
         if running then
@@ -109,7 +111,7 @@ function stepthree()
     end
 end
 
-function stepfour()
+step[4] = function()
     while true do
         clock.sync((s:step(10)()/s:step(11)())*trisindiv)
         if running then
@@ -120,7 +122,7 @@ function stepfour()
     end
 end
 
-function stepfive()
+step[5] = function()
     while true do
         clock.sync((s:step(13)()/s:step(14)())*karpludiv)
         if running then
@@ -131,7 +133,7 @@ function stepfive()
     end
 end
 
-function stepsix()
+step[6] = function()
     while true do
         clock.sync((s:step(16)()/s:step(17)())*resonzdiv)
         if running then
@@ -148,9 +150,14 @@ end
 
 my_positions = {}
 
-function softone()
+soft = {}
+rate = {}
+pans = {}
+softdiv = {}
+
+soft[1] = function()
   while true do
-    clock.sync((s:step(19)()/s:step(20)())*softonediv)
+    clock.sync((s:step(19)()/s:step(20)())*softdiv[1])
     if going then
       local firstfade = 1/c:step(21)()
       softcut.fade_time(1,firstfade)
@@ -177,9 +184,9 @@ function softone()
   end
 end
 
-function softfirstrate()
+rate[1] = function()
   while true do
-    clock.sync((s:step(24)()/s:step(25)())*softonediv)
+    clock.sync((s:step(24)()/s:step(25)())*softdiv[1])
     if going then
       local firstrateslew = 1/c:step(26)()
       softcut.rate_slew_time(1,firstrateslew)
@@ -197,9 +204,9 @@ function softfirstrate()
   end
 end
 
-function firstpan()
+pans[1] = function()
   while true do
-    clock.sync((s:step(30)()/s:step(31)())*softonediv)
+    clock.sync((s:step(30)()/s:step(31)())*softdiv[1])
     if going then
       local firstpan = util.linlin(49,80,-1,1,s:step(32)())
       local firstnegativepan = firstpan * -1
@@ -212,9 +219,9 @@ function firstpan()
   end
 end
 
-function softtwo()
+soft[2] = function()
   while true do
-    clock.sync((s:step(34)()/s:step(35)())*softtwodiv)
+    clock.sync((s:step(34)()/s:step(35)())*softdiv[2])
     if going then
       local secondfade = 1/c:step(36)()
       softcut.fade_time(3,secondfade)
@@ -239,9 +246,9 @@ function softtwo()
   end
 end
 
-function softsecondrate()
+rate[2] = function()
   while true do
-    clock.sync((s:step(39)()/s:step(40)())*softtwodiv)
+    clock.sync((s:step(39)()/s:step(40)())*softdiv[2])
     if going then
       local secondrateslew = 1/c:step(41)()
       softcut.rate_slew_time(3,secondrateslew)
@@ -259,9 +266,9 @@ function softsecondrate()
   end
 end
 
-function secondpan()
+pans[2] = function()
   while true do
-    clock.sync((s:step(45)()/s:step(46)())*softtwodiv)
+    clock.sync((s:step(45)()/s:step(46)())*softdiv[2])
     if going then
       local secondpan = util.linlin(49,80,-1,1,s:step(47)())
       local secondnegativepan = secondpan * -1
@@ -274,9 +281,9 @@ function secondpan()
   end
 end
 
-function softthree()
+soft[3] = function()
   while true do
-    clock.sync((s:step(49)()/s:step(50)())*softthreediv)
+    clock.sync((s:step(49)()/s:step(50)())*softdiv[3])
     if going then
       local thirdfade = 1/c:step(51)()
       softcut.fade_time(5,thirdfade)
@@ -301,9 +308,9 @@ function softthree()
   end
 end
 
-function softthirdrate()
+rate[3] = function()
   while true do
-    clock.sync((s:step(54)()/s:step(55)())*softthreediv)
+    clock.sync((s:step(54)()/s:step(55)())*softdiv[3])
     if going then
       local thirdrateslew = 1/c:step(56)()
       softcut.rate_slew_time(5,thirdrateslew)
@@ -321,9 +328,9 @@ function softthirdrate()
   end
 end
 
-function thirdpan()
+pans[3] = function()
   while true do
-    clock.sync((s:step(60)()/s:step(61)())*softthreediv)
+    clock.sync((s:step(60)()/s:step(61)())*softdiv[3])
     if going then
       local thirdpan = util.linlin(49,80,-1,1,s:step(62)())
       local thirdnegativepan = thirdpan * -1
@@ -532,28 +539,18 @@ function init()
   params:set_action('karplu',function(x) karpludiv=x end)
   params:add_control('resonz','resonz',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('resonz',function(x) resonzdiv=x end)
-  params:add_control('softcut voice 1','softcut voice 1',controlspec.new(1,256,'lin',1,1,''))
-  params:set_action('softcut voice 1',function(x) softonediv=x end)
-  params:add_control('softcut voice 2','softcut voice 2',controlspec.new(1,256,'lin',1,1,''))
-  params:set_action('softcut voice 2',function(x) softtwodiv=x end)
-  params:add_control('softcut voice 3','softcut voice 3',controlspec.new(1,256,'lin',1,1,''))
-  params:set_action('softcut voice 3',function(x) softthreediv=x end)
+  for i=1,3 do
+    params:add_control('softcut voice '..i,'softcut voice '..i,controlspec.new(1,256,'lin',1,1,''))
+    params:set_action('softcut voice '..i,function(x) softdiv[i]=x end)
+  end
   params:add_control('crow outputs 1 & 2','crow outputs 1 & 2',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('crow outputs 1 & 2',function(x) firstcrowdiv=x end)
   params:add_control('crow outputs 3 & 4','crow outputs 3 & 4',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('crow outputs 3 & 4',function(x) secondcrowdiv=x end)
-  params:add_control('just friends voice 1','just friends voice 1',controlspec.new(1,256,'lin',1,1,''))
-  params:set_action('just friends voice 1',function(x) firstjfdiv=x end)
-  params:add_control('just friends voice 2','just friends voice 2',controlspec.new(1,256,'lin',1,1,''))
-  params:set_action('just friends voice 2',function(x) secondjfdiv=x end)
-  params:add_control('just friends voice 3','just friends voice 3',controlspec.new(1,256,'lin',1,1,''))
-  params:set_action('just friends voice 3',function(x) thirdjfdiv=x end)
-  params:add_control('just friends voice 4','just friends voice 4',controlspec.new(1,256,'lin',1,1,''))
-  params:set_action('just friends voice 4',function(x) fourthjfdiv=x end)
-  params:add_control('just friends voice 5','just friends voice 5',controlspec.new(1,256,'lin',1,1,''))
-  params:set_action('just friends voice 5',function(x) fifthjfdiv=x end)
-  params:add_control('just friends voice 6','just friends voice 6',controlspec.new(1,256,'lin',1,1,''))
-  params:set_action('just friends voice 6',function(x) sixthjfdiv=x end)
+  for i=1,6 do
+    params:add_control('just friends voice '..i,'just friends voice '..i,controlspec.new(1,256,'lin',1,1,''))
+    params:set_action('just friends voice '..i,function(x) jfdiv[i]=x end)
+  end
   params:add_control('just friends run','just friends run',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('just friends run',function(x) runjfdiv=x end)
   params:add_control('just friends quantize','just friends quantize',controlspec.new(1,256,'lin',1,1,''))
@@ -562,14 +559,10 @@ function init()
   params:set_action('w/tape',function(x) wtapediv=x end)
   params:add_control('w/del','w/del',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('w/del',function(x) wdeldiv=x end)
-  params:add_control('w/syn voice 1','w/syn voice 1',controlspec.new(1,256,'lin',1,1,''))
-  params:set_action('w/syn voice 1',function(x) firstwsyndiv=x end)
-  params:add_control('w/syn voice 2','w/syn voice 2',controlspec.new(1,256,'lin',1,1,''))
-  params:set_action('w/syn voice 2',function(x) secondwsyndiv=x end)
-  params:add_control('w/syn voice 3','w/syn voice 3',controlspec.new(1,256,'lin',1,1,''))
-  params:set_action('w/syn voice 3',function(x) thirdwsyndiv=x end)
-  params:add_control('w/syn voice 4','w/syn voice 4',controlspec.new(1,256,'lin',1,1,''))
-  params:set_action('w/syn voice 4',function(x) fourthwsyndiv=x end)
+  for i=1,4 do
+    params:add_control('w/syn voice '..i,'w/syn voice '..i,controlspec.new(1,256,'lin',1,1,''))
+    params:set_action('w/syn voice '..i,function(x) wsyndiv[i]=x end)
+  end
   params:add_separator('softcut voice levels','softcut voice levels')
   params:add_control('voice 1','voice 1',controlspec.new(0,1,'lin',0.01,1,''))
   params:set_action('voice 1',function(x) softcut.level(1,x) softcut.level(2,x) end)
@@ -613,38 +606,25 @@ function init()
   print("schicksalslied")
   softcut_init()
   bpm = clock.get_tempo()
-  clock.run(step)
-  clock.run(steptwo)
-  clock.run(stepthree)
-  clock.run(stepfour)
-  clock.run(stepfive)
-  clock.run(stepsix)
-  clock.run(softone)
-  clock.run(softtwo)
-  clock.run(softthree)
-  clock.run(softfirstrate)
-  clock.run(softsecondrate)
-  clock.run(softthirdrate)
-  clock.run(firstpan)
-  clock.run(secondpan)
-  clock.run(thirdpan)
+  for i=1,6 do
+    clock.run(step[i])
+    clock.run(justfriends[i])
+  end
+  for i=1,4 do
+    clock.run(withsyn[i])
+  end
+  for i=1,3 do
+    clock.run(soft[i])
+    clock.run(rate[i])
+    clock.run(pans[i])
+  end
   clock.run(notes_event)
   clock.run(other_event)
-  clock.run(jfa_event)
-  clock.run(jfb_event)
-  clock.run(jfc_event)
-  clock.run(jfd_event)
-  clock.run(jfe_event)
-  clock.run(jff_event)
   clock.run(run_event)
   clock.run(quantize_event)
   clock.run(with_event)
   clock.run(rev_event)
   clock.run(looper)
-  clock.run(withsyna_event)
-  clock.run(withsynb_event)
-  clock.run(withsync_event)
-  clock.run(withsynd_event)
   clock.run(wdel_event)
   clock.run(wcheck)
   clock.run(grid_redraw_clock)
@@ -768,54 +748,57 @@ function other_event()
   end
 end
 
-function jfa_event()
+justfriends = {}
+jfdiv = {}
+
+justfriends[1] = function()
   while true do
-    clock.sync((c:step(77)()/c:step(78)())*firstjfdiv)
+    clock.sync((c:step(77)()/c:step(78)())*jfdiv[1])
     if walking then
     crow.ii.jf.play_voice(1, c:step(79)()/12, j:step(80)())
     end
   end
 end
 
-function jfb_event()
+justfriends[2] = function()
   while true do
-    clock.sync((c:step(81)()/c:step(82)())*secondjfdiv)
+    clock.sync((c:step(81)()/c:step(82)())*jfdiv[2])
     if walking then
     crow.ii.jf.play_voice(2, c:step(83)()/12, j:step(84)())
     end
   end  
 end
 
-function jfc_event()
+justfriends[3] = function()
   while true do
-    clock.sync((c:step(85)()/c:step(86)())*thirdjfdiv)
+    clock.sync((c:step(85)()/c:step(86)())*jfdiv[3])
     if walking then
     crow.ii.jf.play_voice(3, c:step(87)()/12, j:step(88)())
     end
   end
 end
 
-function jfd_event()
+justfriends[4] = function()
   while true do
-    clock.sync((c:step(89)()/c:step(90)())*fourthjfdiv)
+    clock.sync((c:step(89)()/c:step(90)())*jfdiv[4])
     if walking then
     crow.ii.jf.play_voice(4, c:step(91)()/12, j:step(92)())
     end
   end
 end
 
-function jfe_event()
+justfriends[5] = function()
   while true do
-    clock.sync((c:step(93)()/c:step(94)())*fifthjfdiv)
+    clock.sync((c:step(93)()/c:step(94)())*jfdiv[5])
     if walking then
     crow.ii.jf.play_voice(5, c:step(95)()/12, j:step(96)())
     end
   end
 end
 
-function jff_event()
+justfriends[6] = function()
   while true do
-    clock.sync((c:step(97)()/c:step(98)())*sixthjfdiv)
+    clock.sync((c:step(97)()/c:step(98)())*jfdiv[6])
     if walking then
     crow.ii.jf.play_voice(6, c:step(99)()/12, j:step(100)())
     end
@@ -923,36 +906,39 @@ function looper()
   end
 end
 
-function withsyna_event()
+withsyn = {}
+wsyndiv = {}
+
+withsyn[1] = function()
   while true do
-    clock.sync((c:step(175)()/c:step(176)())*firstwsyndiv)
+    clock.sync((c:step(175)()/c:step(176)())*wsyndiv[1])
     if walking then
     crow.ii.wsyn.play_voice(1, c:step(177)()/12, j:step(178)())
     end
   end
 end
 
-function withsynb_event()
+withsyn[2] = function()
   while true do
-    clock.sync((c:step(179)()/c:step(180)())*secondwsyndiv)
+    clock.sync((c:step(179)()/c:step(180)())*wsyndiv[2])
     if walking then
     crow.ii.wsyn.play_voice(2, c:step(181)()/12, j:step(182)())
     end
   end
 end
 
-function withsync_event()
+withsyn[3] = function()
   while true do
-    clock.sync((c:step(183)()/c:step(184)())*thirdwsyndiv)
+    clock.sync((c:step(183)()/c:step(184)())*wsyndiv[3])
     if walking then
     crow.ii.wsyn.play_voice(3, c:step(185)()/12, j:step(186)())
     end
   end
 end
 
-function withsynd_event()
+withsyn[4] = function()
   while true do
-    clock.sync((c:step(187)()/c:step(188)())*fourthwsyndiv)
+    clock.sync((c:step(187)()/c:step(188)())*wsyndiv[4])
     if walking then
     crow.ii.wsyn.play_voice(4, c:step(189)()/12, j:step(190)())
     end
