@@ -397,6 +397,17 @@ function init()
   sinsin_release_lfo = _lfos:add{min = 0.003, max = 8}
   sinsin_amp_lfo = _lfos:add{min = 0, max = 1}
   sinsin_pan_lfo = _lfos:add{min = -1, max = 1}
+  trisin_index_lfo = _lfos:add{min = -24, max = 24}
+  trisin_modnum_lfo = _lfos:add{min = 1, max = 100}
+  trisin_modeno_lfo = _lfos:add{min = 1, max = 100}
+  trisin_phase_lfo = _lfos:add{min = -24, max = 24}
+  trisin_attack_lfo = _lfos:add{min = 0.003, max = 8}
+  trisin_release_lfo = _lfos:add{min = 0.003, max = 8}
+  trisin_amp_lfo = _lfos:add{min = 0, max = 1}
+  trisin_pan_lfo = _lfos:add{min = -1, max = 1}
+  ringer_index_lfo = _lfos:add{min = 0, max = 24}
+  ringer_amp_lfo = _lfos:add{min = 0, max = 1}
+  ringer_pan_lfo = _lfos:add{min = -1, max = 1}
   tritri_index_lfo = _lfos:add{min = -24, max = 24}
   tritri_modnum_lfo = _lfos:add{min = 1, max = 100}
   tritri_modeno_lfo = _lfos:add{min = 1, max = 100}
@@ -408,17 +419,6 @@ function init()
   tritri_release_lfo = _lfos:add{min = 0.003, max = 8}
   tritri_amp_lfo = _lfos:add{min = 0, max = 1}
   tritri_pan_lfo = _lfos:add{min = -1, max = 1}
-  ringer_index_lfo = _lfos:add{min = 0, max = 24}
-  ringer_amp_lfo = _lfos:add{min = 0, max = 1}
-  ringer_pan_lfo = _lfos:add{min = -1, max = 1}
-  trisin_index_lfo = _lfos:add{min = -24, max = 24}
-  trisin_modnum_lfo = _lfos:add{min = 1, max = 100}
-  trisin_modeno_lfo = _lfos:add{min = 1, max = 100}
-  trisin_phase_lfo = _lfos:add{min = -24, max = 24}
-  trisin_attack_lfo = _lfos:add{min = 0.003, max = 8}
-  trisin_release_lfo = _lfos:add{min = 0.003, max = 8}
-  trisin_amp_lfo = _lfos:add{min = 0, max = 1}
-  trisin_pan_lfo = _lfos:add{min = -1, max = 1}
   karplu_index_lfo = _lfos:add{min = 0, max = 24}
   karplu_coef_lfo = _lfos:add{min = -1, max = 1}
   karplu_amp_lfo = _lfos:add{min = 0, max = 1}
@@ -451,6 +451,28 @@ function init()
   sinsin_amp_lfo:set('action', function(scaled, raw) params:set('LiedMotor_sinsin_amp',scaled) end)
   sinsin_pan_lfo:add_params('sinsin_pan_lfo', 'sinsin pan')
   sinsin_pan_lfo:set('action', function(scaled, raw) params:set('LiedMotor_sinsin_pan',scaled) end)
+  trisin_attack_lfo:add_params('trisin_attack_lfo', 'trisin attack')
+  trisin_attack_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_attack',scaled) end)
+  trisin_release_lfo:add_params('trisin_release_lfo', 'trisin release')
+  trisin_release_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_release',scaled) end)
+  trisin_phase_lfo:add_params('trisin_phase_lfo', 'trisin phase')
+  trisin_phase_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_phase',scaled) end)
+  trisin_index_lfo:add_params('trisin_index_lfo', 'trisin index')
+  trisin_index_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_index',scaled) end)
+  trisin_modnum_lfo:add_params('trisin_modnum_lfo', 'trisin modnum')
+  trisin_modnum_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_modnum',scaled) end)
+  trisin_modeno_lfo:add_params('trisin_modeno_lfo', 'trisin modeno')
+  trisin_modeno_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_modeno',scaled) end)
+  trisin_amp_lfo:add_params('trisin_amp_lfo', 'trisin amp')
+  trisin_amp_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_amp',scaled) end)
+  trisin_pan_lfo:add_params('trisin_pan_lfo', 'trisin pan')
+  trisin_pan_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_pan',scaled) end)
+  ringer_index_lfo:add_params('ringer_index_lfo', 'ringer index')
+  ringer_index_lfo:set('action', function(scaled, raw) params:set('LiedMotor_ringer_index',scaled) end)
+  ringer_amp_lfo:add_params('ringer_amp_lfo', 'ringer amp')
+  ringer_amp_lfo:set('action', function(scaled, raw) params:set('LiedMotor_ringer_amp',scaled) end)
+  ringer_pan_lfo:add_params('ringer_pan_lfo', 'ringer pan')
+  ringer_pan_lfo:set('action', function(scaled, raw) params:set('LiedMotor_ringer_pan',scaled) end)
   tritri_attack_lfo:add_params('tritri_attack_lfo', 'tritri attack')
   tritri_attack_lfo:set('action', function(scaled, raw) params:set('LiedMotor_tritri_attack',scaled) end)
   tritri_release_lfo:add_params('tritri_release_lfo', 'tritri release')
@@ -473,28 +495,6 @@ function init()
   tritri_amp_lfo:set('action', function(scaled, raw) params:set('LiedMotor_tritri_amp',scaled) end)
   tritri_pan_lfo:add_params('tritri_pan_lfo', 'tritri pan')
   tritri_pan_lfo:set('action', function(scaled, raw) params:set('LiedMotor_tritri_pan',scaled) end)
-  ringer_index_lfo:add_params('ringer_index_lfo', 'ringer index')
-  ringer_index_lfo:set('action', function(scaled, raw) params:set('LiedMotor_ringer_index',scaled) end)
-  ringer_amp_lfo:add_params('ringer_amp_lfo', 'ringer amp')
-  ringer_amp_lfo:set('action', function(scaled, raw) params:set('LiedMotor_ringer_amp',scaled) end)
-  ringer_pan_lfo:add_params('ringer_pan_lfo', 'ringer pan')
-  ringer_pan_lfo:set('action', function(scaled, raw) params:set('LiedMotor_ringer_pan',scaled) end)
-  trisin_attack_lfo:add_params('trisin_attack_lfo', 'trisin attack')
-  trisin_attack_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_attack',scaled) end)
-  trisin_release_lfo:add_params('trisin_release_lfo', 'trisin release')
-  trisin_release_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_release',scaled) end)
-  trisin_phase_lfo:add_params('trisin_phase_lfo', 'trisin phase')
-  trisin_phase_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_phase',scaled) end)
-  trisin_index_lfo:add_params('trisin_index_lfo', 'trisin index')
-  trisin_index_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_index',scaled) end)
-  trisin_modnum_lfo:add_params('trisin_modnum_lfo', 'trisin modnum')
-  trisin_modnum_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_modnum',scaled) end)
-  trisin_modeno_lfo:add_params('trisin_modeno_lfo', 'trisin modeno')
-  trisin_modeno_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_modeno',scaled) end)
-  trisin_amp_lfo:add_params('trisin_amp_lfo', 'trisin amp')
-  trisin_amp_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_amp',scaled) end)
-  trisin_pan_lfo:add_params('trisin_pan_lfo', 'trisin pan')
-  trisin_pan_lfo:set('action', function(scaled, raw) params:set('LiedMotor_trisin_pan',scaled) end)
   karplu_index_lfo:add_params('karplu_index_lfo', 'karplu index')
   karplu_index_lfo:set('action', function(scaled, raw) params:set('LiedMotor_karplu_index',scaled) end)
   karplu_coef_lfo:add_params('karplu_coef_lfo', 'karplu coef')
@@ -529,12 +529,12 @@ function init()
   params:add_separator('clock divs','clock divs')
   params:add_control('sinsin','sinsin',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('sinsin',function(x) sinsindiv=x end)
-  params:add_control('tritri','tritri',controlspec.new(1,256,'lin',1,1,''))
-  params:set_action('tritri',function(x) tritridiv=x end)
-  params:add_control('ringer','ringer',controlspec.new(1,256,'lin',1,1,''))
-  params:set_action('ringer',function(x) ringerdiv=x end)
   params:add_control('trisin','trisin',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('trisin',function(x) trisindiv=x end)
+  params:add_control('ringer','ringer',controlspec.new(1,256,'lin',1,1,''))
+  params:set_action('ringer',function(x) ringerdiv=x end)
+  params:add_control('tritri','tritri',controlspec.new(1,256,'lin',1,1,''))
+  params:set_action('tritri',function(x) tritridiv=x end)
   params:add_control('karplu','karplu',controlspec.new(1,256,'lin',1,1,''))
   params:set_action('karplu',function(x) karpludiv=x end)
   params:add_control('resonz','resonz',controlspec.new(1,256,'lin',1,1,''))
