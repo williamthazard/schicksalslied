@@ -28,9 +28,9 @@ Once you've entered your text, there are three ways to turn it into music. They 
 <i>LiedMotor</i><br>
 Once you've got an active line, you can activate the LiedMotor engine by pressing K3. But by default, you won't hear any sound yet. You'll need to choose one or more voices. LiedMotor has six voices:
 1) sinsin (an FM voice with a sine wave modulated by another sine wave)
-2) tritri (an FM voice with two oscillators based on the Mannequins Mangrove module, patched "square to air")
+2) trisin (an FM voice with a triangle wave modulated by a sine wave)
 3) ringer (a pinged resonant filter with variable decay)
-4) trisin (an FM voice with a triangle wave modulated by a sine wave)
+4) tritri (an FM voice with two oscillators based on the Mannequins Mangrove module, patched "square to air")
 5) karplu (a karplus-strong-style physical modeling string synthesis voice)
 6) resonz (a pinged resonant filter without variable decay)
 
