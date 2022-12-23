@@ -11,7 +11,7 @@
 ---
 ---use grid to recall history
 ---
----version 1.0.6
+---version 1.0.5
 
 local extensions = "/home/we/.local/share/SuperCollider/Extensions"
 engine.name = util.file_exists(extensions .. "/FormantTriPTR/FormantTriPTR.sc") and 'LiedMotor' or nil
@@ -91,11 +91,11 @@ end
 
 step[2] = function()
     while true do
-        clock.sync((s:step(4)()/s:step(5)())*tritridiv)
+        clock.sync((s:step(4)()/s:step(5)())*trisindiv)
         if running then
             local note_num = s:step(6)()
             local freq = MusicUtil.note_num_to_freq(note_num)
-            LiedMotor.trigtritri(freq)
+            LiedMotor.trigtrisin(freq)
         end
     end
 end
@@ -113,11 +113,11 @@ end
 
 step[4] = function()
     while true do
-        clock.sync((s:step(10)()/s:step(11)())*trisindiv)
+        clock.sync((s:step(10)()/s:step(11)())*tritridiv)
         if running then
             local note_num = s:step(12)()
             local freq = MusicUtil.note_num_to_freq(note_num)
-            LiedMotor.trigtrisin(freq)
+            LiedMotor.trigtritri(freq)
         end
     end
 end
