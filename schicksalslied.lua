@@ -11,7 +11,7 @@
 ---
 ---use grid to recall history
 ---
----version 1.0.6
+---version 1.0.7
 
 local extensions = "/home/we/.local/share/SuperCollider/Extensions"
 engine.name = util.file_exists(extensions .. "/FormantTriPTR/FormantTriPTR.sc") and 'LiedMotor' or nil
@@ -20,7 +20,7 @@ LiedMotor = include('lib/LiedMotor_engine')
 MusicUtil = require "musicutil"
 sequins = require "sequins"
 fileselect = require 'fileselect'
-_lfos = require 'lfo'
+_lfos = include 'lib/lied_lfo'
 
 selectedfile = {}
 filelength = {}
