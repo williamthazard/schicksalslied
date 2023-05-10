@@ -21,12 +21,15 @@ MusicUtil = require 'musicutil'
 Sequins = require 'sequins'
 FileSelect = require 'fileselect'
 _lfos = include 'lib/lied_lfo'
+--mftconf = require 'mftconf/lib/mftconf'
+--mft = midi.connect()
 
 Selected_File = {}
 File_Length = {}
+Softcut_Levels = {}
 
 for i=1,3 do
-  Selected_File[i] = _path.dust..'audio/hermit_leaves.wav'
+  Selected_File[i] = nil
 end
 
 My_String = " "
@@ -37,6 +40,7 @@ New_Line = false
 Running = false 
 Going = false
 Walking = false
+Buffering = false
 
 starter = 1
 firstrate = 1
@@ -47,14 +51,14 @@ function softcut_init()
   softcut.buffer_clear()
   for i=1,6 do
     softcut.enable(i,1)
-    softcut.level(i,1.0)
+    softcut.level(i,0)
     softcut.buffer(i,i%2+1)
     softcut.position(i,1)
-    softcut.play(i,0)
     softcut.level_slew_time(i,1.0)
     softcut.phase_quant(i,0.5)
     softcut.loop(i,1)
     softcut.pan(i, i % 2 == 0 and 1 or -1)
+    softcut.play(i,1)
   end
   softcut.voice_sync(2,1,0)
   softcut.voice_sync(4,3,0)
@@ -97,18 +101,19 @@ for i=1,3 do
   Soft[i] = function()
     while true do
       clock.sync((S:step(15*(i-1)+19)()/S:step(15*(i-1)+20)())*Soft_Div[i])
-      if Going then
-        local fade = 1/(C:step(15*(i-1)+21)())
-        softcut.fade_time(2*i-1,fade)
-        softcut.fade_time(2*i,fade)
-        local _,samples,rate = audio.file_info(Selected_File[i])
-        local length = samples/rate
-        if length > 45 then 
-          length = 45
+      if Going and Selected_File[i] ~= nil then
+        if not Buffering then
+          local fade = (1/C:step(15*(i-1)+21)())+0.18
+          softcut.fade_time(2*i-1,fade)
+          softcut.fade_time(2*i,fade)
+        end
+        local length = get_len(Selected_File[i])
+        if length > 90 then 
+          length = 90
         else 
           length = length
         end
-        local scstarter = 50*(i-1)
+        local scstarter = 100*(i-1)
         local position = util.linlin(49,80,scstarter,scstarter+length-0.5,S:step(15*(i-1)+22)())
         softcut.position(2*i-1,position)
         softcut.position(2*i,position)
@@ -131,7 +136,7 @@ for i=1,3 do
   Rate[i] = function()
     while true do
       clock.sync((S:step(15*(i-1)+24)()/S:step(15*(i-1)+25)())*Soft_Div[i])
-      if Going then
+      if Going and Selected_File[i] ~= nil then
         local rate_slew = 1/C:step(15*(i-1)+26)()
         Rates[i] = math.min(S:step(15*(i-1)+27)()/S:step(15*(i-1)+28)(), 16)
         Rates[i] = C:step(15*(i-1)+29)() > 17 and Rates[i]*-1 or Rates[i]
@@ -145,7 +150,7 @@ for i=1,3 do
   Pans[i] = function()
     while true do
       clock.sync((S:step(15*(i-1)+30)()/S:step(15*(i-1)+31)())*Soft_Div[i])
-      if Going then
+      if Going and Selected_File[i] ~= nil then
         local pan = util.linlin(49,80,-1,1,S:step(15*(i-1)+32)())
         local pan_slew = 1/J:step(15*(i-1)+33)()
         for j = 1, 2 do
@@ -155,19 +160,6 @@ for i=1,3 do
       end
     end
   end
-  Reed[i] = function()
-    while true do
-      clock.sync(J:step(63+i)()*Soft_Div[i])
-      local filelength, starter, screader, scstarter
-      filelength = get_len(Selected_File[i])
-      starter = util.linlin(49,80,0,filelength,S:step(66+i)())
-      screader = 150+(50*(i-1))
-      scstarter = 50*(i-1)
-      softcut.buffer_read_stereo(Selected_File[i], starter, screader, 50, 0, 1)
-      clock.sync(J:step(69+i)()*Soft_Div[i])
-      softcut.buffer_copy_stereo(screader,scstarter,50,1/C:step(70)(),0,0)
-    end
-  end
 end
   
 function key(n, z)
@@ -175,8 +167,12 @@ function key(n, z)
   if n == 2 then
     Going = not Going
     print(Going and 'going' or 'not going')
-    for i = 1, 6 do
-      softcut.play(i, Going and 1 or 0)
+    for i = 1,3 do 
+      local fade = (1/C:step(15*(i-1)+21)())+0.18
+      softcut.fade_time(2*i-1,fade)
+      softcut.fade_time(2*i,fade)
+      softcut.level(2 * i - 1, Going and Softcut_Levels[i] or 0)
+      softcut.level(2 * i, Going and Softcut_Levels[i] or 0)
     end
   elseif n == 3 then
     Running = not Running
@@ -232,10 +228,36 @@ function get_len(x)
   return samples / rate
 end
 
+function update_softcut()
+  for i = 1,3 do
+    if Selected_File[i] ~= nil then
+      local filelength, starter, screader, scstarter
+      filelength = get_len(Selected_File[i])
+      starter = util.linlin(49,80,0,filelength,S:step(66+i)())
+      scstarter = 100*(i-1)
+      softcut.fade_time(2*i-1,0.06)
+      softcut.fade_time(2*i,0.06)
+      softcut.level(2 * i - 1,0)
+      softcut.level(2 * i,0)
+      Buffering = true
+      clock.sleep(0.07)
+      softcut.buffer_clear_region(scstarter,100)
+      softcut.buffer_read_stereo(Selected_File[i], starter, scstarter, 90, 0, 1)
+      clock.sleep(0.07)
+      Buffering = false
+      softcut.fade_time(2*i-1,0.06)
+      softcut.fade_time(2*i,0.06)
+      softcut.level(2 * i - 1, Going and Softcut_Levels[i] or 0)
+      softcut.level(2 * i, Going and Softcut_Levels[i] or 0)
+    end
+  end
+end
+
 local function set()
   S:settable(process_string(My_String))
   C:settable(crow_string(My_String))
   J:settable(jf_string(My_String))
+  clock.run(update_softcut)
 end
 
 local function wcheck()
@@ -501,6 +523,10 @@ keyboard.code = function (code, val)
     My_String = ""
     History_Index = #History
     New_Line = true
+  elseif keyboard.ctrl() then
+    table.remove(History,#History)
+    History_Index = #History
+    My_String = ""
   end
   redraw()
   grid_redraw()
@@ -532,7 +558,7 @@ function init()
   local formanttri_files = {"FormantTriPTR.sc", "FormantTriPTR_scsynth.so"}
   for _, file in pairs(formanttri_files) do
     if util.file_exists(extensions .. "/FormantTriPTR/" .. file) then goto continue end
-    util.os_capture("mkdir " .. extensions .. "/FormantTriPTR")
+    util.os_capture("mkdir " .. extensions .. "FormantTriPTR")
     util.os_capture("cp " .. norns.state.path .. "/ignore/" .. file .. " " .. extensions .. "/FormantTriPTR/" .. file)
     print("installed " .. file)
     Needs_Restart = true
@@ -639,7 +665,7 @@ function init()
       JF_Div[7] = x
     end
   }
-params:add{
+  params:add{
     type = 'control',
     id = 'just_friends_quantize',
     name = 'just friends quantize',
@@ -685,8 +711,11 @@ params:add{
       name = 'voice ' .. i,
       controlspec = controlspec.new(0,1,'lin',0.01,1,''),
       action = function (x)
-        softcut.level(2 * i - 1, x)
-        softcut.level(2 * i, x)
+        Softcut_Levels[i] = x
+        if Going and not Buffering then
+          softcut.level(2 * i - 1, x)
+          softcut.level(2 * i, x)
+        end
       end
     }
   end
@@ -764,6 +793,7 @@ params:add{
     end
   }
   params:bang()
+  softcut_init()
   params:add_separator('load_files','load files')
   for i = 1, 3 do
     params:add{
@@ -772,6 +802,7 @@ params:add{
       name = 'audio file ' .. i,
       action = function (x)
         Selected_File[i] = x
+        clock.run(update_softcut)
       end
     }
   end
@@ -794,7 +825,6 @@ params:add{
     end
   end
   print('Schicksalslied')
-  softcut_init()
   local bpm = clock.get_tempo()
   for i = 1, 6 do
     clock.run(Step[i])
@@ -807,7 +837,6 @@ params:add{
     clock.run(Soft[i])
     clock.run(Rate[i])
     clock.run(Pans[i])
-    clock.run(Reed[i])
   end
   for i = 1, 2 do
     clock.run(Notes_Event[i])
@@ -833,4 +862,5 @@ params:add{
   crow.ii.wsyn.voices(4)
   crow.ii.wsyn.patch(1,1)
   crow.ii.wsyn.patch(2,2)
+  --mftconf.load_conf(mft,_path.dust.."code/schicksalslied/lib/default.mfs")
 end
