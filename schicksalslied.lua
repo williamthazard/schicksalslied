@@ -571,7 +571,7 @@ function init()
   local modnum = {modnum = {min = 1, max = 100}}
   local modeno = {modeno = {min = 1, max = 100}}
   local width = {width = {min = 0, max = 1}}
-  local modwidth = {modidth = {min = 0, max = 1}}
+  local modwidth = {modwidth = {min = 0, max = 1}}
   local phase = {phase = {min = -24, max = 24}}
   local modphase = {modphase = {min = -24, max = 24}}
   local attack = {attack = {min = 0.003, max = 8}}
