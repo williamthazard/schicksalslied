@@ -1,5 +1,5 @@
 # schicksalslied
-_Note_: This is schicksalslied 1.0. For the current version, see [schicksalslied 2.0](https://github.com/williamthazard/schicksalslied_2).
+_Note_: This is schicksalslied 1.0. For the current version, see [schicksalslied 2](https://github.com/williamthazard/schicksalslied_2).
 
 a poetry sequencer for monome norns
 
