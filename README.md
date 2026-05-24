@@ -1,4 +1,6 @@
 # schicksalslied
+_Note_: This is schicksalslied 1.0. For the current version, see [schicksalslied 2.0](https://github.com/williamthazard/schicksalslied_2).
+
 a poetry sequencer for monome norns
 
 <i>note: you will need to restart norns after installing this script, in order for the LiedMotor synth engine to install</i>
